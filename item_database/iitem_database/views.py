@@ -73,7 +73,7 @@ def itemClassPage(request, classItemName):
 	except:
 		raise Http404('Item class not found.')
 	template = get_template('itemClassPage.html')
-	items = Item.objects.all() # WRONG Item.objects.get(typeID=itemClass.id)
+	items = Item.objects.filter(typeID=itemClass.id)
 	variables = Context({
 		'titlehead': 'Item class',
 		'itemClass': itemClass,
