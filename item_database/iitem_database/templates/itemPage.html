@@ -1,0 +1,36 @@
+<html>
+	<head>
+			<title> {{titlehead}} - {{item.name}}</title>
+	</head>
+	<body>
+		<a href="/items/">Return to items</a>
+		<h1> {{titlehead}} </h1>
+			<p>Name: {{item.name}}</p>
+			<p>Description: {{item.desc}}</p>
+			<p>The item can be found in:</p>
+			{% if areas %}
+			<ul>
+			{% for area in areas %}
+				<li>
+					{{area.name}}
+				</li>
+			{% endfor %}
+			</ul>
+			{% else %}
+				<p>Nowhere</p>
+			{% endif %}
+
+			<p>The item is dropped by:</p>
+			{% if creatures %}
+			<ul>
+			{% for creature in creatures %}
+				<li>
+					{{creature.name}}
+				</li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<p>Nobody</p>
+		{% endif %}
+	</body>
+</html>

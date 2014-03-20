@@ -1,0 +1,48 @@
+<html>
+	<head>
+			<title> {{titlehead}} - {{creature.name}}</title>
+	</head>
+	<body>
+		<a href="/creatures/">Return to creatures</a>
+		<h1> {{titlehead}} </h1>
+			<p>Name: {{creature.name}}</p>
+			<p>Description: {{creature.desc}}</p>
+			<p>Unique: {% if creature.unique %}
+							Yes
+					   {% else %}
+							No
+						{% endif %}
+			</p>
+
+
+			<p>Souls: {{creature.souls}}<p>
+
+
+			<p>Drops:</p>
+			{% if items %}
+			<ul>
+			{% for item in items %}
+				<li>
+					{{item.name}}
+				</li>
+			{% endfor %}
+			</ul>
+			{% else %}
+				<p>None</p>
+			{% endif %}
+
+
+			<p>Can be found in:</p>
+			{% if areas %}
+			<ul>
+			{% for area in areas %}
+				<li>
+					{{area.name}}
+				</li>
+			{% endfor %}
+			</ul>
+			{% else %}
+				<p>Nowhere</p>
+			{% endif %}
+	</body>
+</html>

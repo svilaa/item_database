@@ -1,0 +1,16 @@
+<html>
+	<head>
+			<title> {{titlehead}} </title>
+	</head>
+	<body>
+		<a href="/">Return to mainpage</a>
+		<h1> {{titlehead}} </h1>
+			<ul>
+			{% for element in element_list %}
+				<li>
+					<a href="{{element.name}}">{{element.name}}</a>
+				</li>
+			{% endfor %}
+			</ul>
+	</body>
+</html>

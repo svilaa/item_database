@@ -1,0 +1,23 @@
+<html>
+	<head>
+			<title> {{titlehead}} - {{itemClass.name}}</title>
+	</head>
+	<body>
+		<a href="/itemclasses/">Return to item classes</a>
+		<h1> {{titlehead}} </h1>
+			<p>Name: {{itemClass.name}}</p>
+			<p>Description: {{itemClass.desc}}</p>
+			<p>Items in this class:</p>
+			{% if items %}
+				<ul>
+				{% for item in items %}
+					<li>
+						{{item.name}}
+					</li>
+				{% endfor %}
+				</ul>
+			{% else %}
+				<p>None</p>
+			{% endif %}
+	</body>
+</html>

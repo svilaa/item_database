@@ -1,0 +1,38 @@
+<html>
+	<head>
+			<title> {{titlehead}} - {{area.name}}</title>
+	</head>
+	<body>
+		<a href="/areas/">Return to areas</a>
+		<h1> {{titlehead}} </h1>
+			<p>Name: {{area.name}}</p>
+			<p>Description: {{area.desc}}</p>
+			
+
+			<p>Objects in this area:</p>
+			{% if items %}
+			<ul>
+			{% for item in items %}
+				<li>
+					{{item.name}}
+				</li>
+			{% endfor %}
+			</ul>
+			{% else %}
+				<p>None</p>
+			{% endif %}
+
+			<p>Creatures in this area:</p>
+			{% if creatures %}
+			<ul>
+			{% for creature in creatures %}
+				<li>
+					{{creature.name}}
+				</li>
+			{% endfor %}
+			</ul>
+			{% else %}
+				<p>None</p>
+			{% endif %}
+	</body>
+</html>

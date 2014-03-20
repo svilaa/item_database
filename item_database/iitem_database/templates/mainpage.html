@@ -1,0 +1,17 @@
+<html>
+	<head>
+		<title>{{ titlehead }}</title>
+	</head>
+	<body>
+		<h1>{{ pagetitle }}</h1>
+		{% if user.username %}
+			<p>Welcome {{user.username}}</p>
+			<p> <a href="/items/">Items</a></p>
+			<p> <a href="/itemclasses/">Item classes</a></p>
+			<p> <a href="/areas/">Areas</a></p>
+			<p> <a href="/creatures/">Creatures</a></p>
+		{% else %}
+			<p>Wellcome nobody. You must <a href="/login/">sign in</a></p>
+		{% endif %}
+	</body>
+</html>
