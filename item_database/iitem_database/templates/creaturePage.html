@@ -23,7 +23,7 @@
 			<ul>
 			{% for item in items %}
 				<li>
-					{{item.name}}
+					<a href="/items/{{item.name}}"><a href="/items/{{item.name}}">{{item.name}}</a>
 				</li>
 			{% endfor %}
 			</ul>
@@ -37,7 +37,7 @@
 			<ul>
 			{% for area in areas %}
 				<li>
-					{{area.name}}
+					<a href="/areas/{{area.name}}">{{area.name}}</a>
 				</li>
 			{% endfor %}
 			</ul>

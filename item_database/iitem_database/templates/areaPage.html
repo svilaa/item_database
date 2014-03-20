@@ -14,7 +14,7 @@
 			<ul>
 			{% for item in items %}
 				<li>
-					{{item.name}}
+					<a href="/items/{{item.name}}">{{item.name}}</a>
 				</li>
 			{% endfor %}
 			</ul>
@@ -27,7 +27,7 @@
 			<ul>
 			{% for creature in creatures %}
 				<li>
-					{{creature.name}}
+					<a href="/creatures/{{creature.name}}">{{creature.name}}</a>
 				</li>
 			{% endfor %}
 			</ul>
