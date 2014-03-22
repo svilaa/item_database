@@ -91,7 +91,7 @@ def creaturePage(request, creatureItemName):
 	items = Item.objects.filter(drops__creatureID=creature.id)
 	areas = Area.objects.filter(encountered__creatureID=creature.id)
 	variables = Context({
-		'titlehead': 'Item class',
+		'titlehead': 'Creature',
 		'creature': creature,
 		'items': items,
 		'areas': areas,
@@ -108,7 +108,7 @@ def areaPage(request, areaItemName):
 	items = Item.objects.filter(found__areaID=area.id)
 	creatures = Creature.objects.filter(encountered__areaID=area.id)
 	variables = Context({
-		'titlehead': 'Item class',
+		'titlehead': 'Area',
 		'area': area,
 		'items': items,
 		'creatures': creatures,
