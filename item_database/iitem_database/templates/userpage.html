@@ -6,11 +6,11 @@
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{username}}</p>
 			<p>Items:</p>
-			{% if items %}
+			{% if userItems %}
 				<ul>
-				{% for item in items %}
+				{% for userItem in userItems %}
 					<li>
-						<a href="/items/{{item.id}}">{{item.name}}</a>
+						<a href="/items/{{userItem.itemID.id}}">{{userItem.itemID.name}}</a> - {{userItem.quantity}}
 					</li>
 				{% endfor %}
 				</ul>

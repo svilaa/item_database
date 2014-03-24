@@ -21,16 +21,16 @@
 			{% endif %}
 
 			<p>The item is dropped by:</p>
-			{% if creatures %}
+			{% if drops %}
 			<ul>
-			{% for creature in creatures %}
+			{% for drop in drops %}
 				<li>
-					<a href="/creatures/{{creature.id}}">{{creature.name}}</a>
+					<a href="/creatures/{{drop.creatureID.id}}">{{drop.creatureID.name}}</a> - {{drop.dropRate}}%
 				</li>
 			{% endfor %}
 			</ul>
-		{% else %}
-			<p>Nobody</p>
-		{% endif %}
+			{% else %}
+				<p>Nobody</p>
+			{% endif %}
 	</body>
 </html>

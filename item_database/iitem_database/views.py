@@ -2,7 +2,7 @@
 from django.http import HttpResponse, Http404
 from django.template import Context
 from django.template.loader import get_template
-from iitem_database.models import ItemClass, Area, Creature, Item, Found, UserItems
+from iitem_database.models import ItemClass, Area, Creature, Item, Found, UserItems, Drops
 from django.contrib.auth.models import User
 
 def mainpage(request):
@@ -21,10 +21,10 @@ def userpage(request, username):
 	except:
 		raise Http404('User not found.')
 	template = get_template('userpage.html')
-	items = Item.objects.filter(useritems__userID=user.id)
+	userItems = UserItems.objects.filter(userID=user.id)
 	variables = Context({
 		'username': username,
-		'items': items,
+		'userItems': userItems,
 		})
 	output = template.render(variables)
 	return HttpResponse(output)
@@ -58,12 +58,12 @@ def itemPage(request, itemID):
 		raise Http404('Item not found.')
 	template = get_template('itemPage.html')
 	areas = Area.objects.filter(found__itemID=item.id)
-	creatures = Creature.objects.filter(drops__itemID=item.id)
+	drops = Drops.objects.filter(itemID=itemID)
 	variables = Context({
 		'titlehead': 'Item',
 		'item': item,
 		'areas': areas,
-		'creatures': creatures,
+		'drops': drops,
 		})
 	output = template.render(variables)
 	return HttpResponse(output)
@@ -89,12 +89,12 @@ def creaturePage(request, creatureID):
 	except:
 		raise Http404('Creature not found.')
 	template = get_template('creaturePage.html')
-	items = Item.objects.filter(drops__creatureID=creature.id)
+	drops = Drops.objects.filter(creatureID=creatureID)
 	areas = creature.areas.all()
 	variables = Context({
 		'titlehead': 'Creature',
 		'creature': creature,
-		'items': items,
+		'drops': drops,
 		'areas': areas,
 		})
 	output = template.render(variables)

@@ -19,11 +19,11 @@
 
 
 			<p>Drops:</p>
-			{% if items %}
+			{% if drops %}
 			<ul>
-			{% for item in items %}
+			{% for drop in drops %}
 				<li>
-					<a href="/items/{{item.id}}">{{item.name}}</a>
+					<a href="/items/{{drop.itemID.id}}">{{drop.itemID.name}}</a> - {{drop.dropRate}}%
 				</li>
 			{% endfor %}
 			</ul>
