@@ -1,9 +1,21 @@
 <html>
 	<head>
-			<title> {{titlehead}}</title>
+			<title> {{titlehead}} </title>
 	</head>
 	<body>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{username}}</p>
+			<p>Items:</p>
+			{% if items %}
+				<ul>
+				{% for item in items %}
+					<li>
+						<a href="/items/{{item.id}}">{{item.name}}</a>
+					</li>
+				{% endfor %}
+				</ul>
+			{% else %}
+				<p>None</p>
+			{% endif %}
 	</body>
 </html>

@@ -12,7 +12,7 @@
 			<ul>
 			{% for area in areas %}
 				<li>
-					<a href="/areas/{{area.name}}">{{area.name}}</a>
+					<a href="/areas/{{area.id}}">{{area.name}}</a>
 				</li>
 			{% endfor %}
 			</ul>
@@ -25,7 +25,7 @@
 			<ul>
 			{% for creature in creatures %}
 				<li>
-					<a href="/creatures/{{creature.name}}">{{creature.name}}</a>
+					<a href="/creatures/{{creature.id}}">{{creature.name}}</a>
 				</li>
 			{% endfor %}
 			</ul>
