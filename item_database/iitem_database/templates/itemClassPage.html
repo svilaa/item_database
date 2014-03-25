@@ -3,7 +3,7 @@
 			<title> {{titlehead}} - {{itemClass.name}}</title>
 	</head>
 	<body>
-		<a href="/itemclasses/">Return to item classes</a>
+		<a href="/itemclasses.html">Return to item classes</a>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{itemClass.name}}</p>
 			<p>Description: {{itemClass.desc}}</p>
@@ -12,7 +12,7 @@
 				<ul>
 				{% for item in items %}
 					<li>
-						<a href="/items/{{item.id}}">{{item.name}}</a>
+						<a href="/items/{{item.id}}.html">{{item.name}}</a>
 					</li>
 				{% endfor %}
 				</ul>

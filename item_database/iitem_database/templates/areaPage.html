@@ -3,7 +3,7 @@
 			<title> {{titlehead}} - {{area.name}}</title>
 	</head>
 	<body>
-		<a href="/areas/">Return to areas</a>
+		<a href="/areas.html">Return to areas</a>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{area.name}}</p>
 			<p>Description: {{area.desc}}</p>
@@ -14,7 +14,7 @@
 			<ul>
 			{% for item in items %}
 				<li>
-					<a href="/items/{{item.id}}">{{item.name}}</a>
+					<a href="/items/{{item.id}}.html">{{item.name}}</a>
 				</li>
 			{% endfor %}
 			</ul>
@@ -27,7 +27,7 @@
 			<ul>
 			{% for creature in creatures %}
 				<li>
-					<a href="/creatures/{{creature.id}}">{{creature.name}}</a>
+					<a href="/creatures/{{creature.id}}.html">{{creature.name}}</a>
 				</li>
 			{% endfor %}
 			</ul>

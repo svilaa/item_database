@@ -3,7 +3,7 @@
 			<title> {{titlehead}} - {{creature.name}}</title>
 	</head>
 	<body>
-		<a href="/creatures/">Return to creatures</a>
+		<a href="/creatures.html">Return to creatures</a>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{creature.name}}</p>
 			<p>Description: {{creature.desc}}</p>
@@ -23,7 +23,7 @@
 			<ul>
 			{% for drop in drops %}
 				<li>
-					<a href="/items/{{drop.itemID.id}}">{{drop.itemID.name}}</a> - {{drop.dropRate}}%
+					<a href="/items/{{drop.itemID.id}}.html">{{drop.itemID.name}}</a> - {{drop.dropRate}}%
 				</li>
 			{% endfor %}
 			</ul>
@@ -37,7 +37,7 @@
 			<ul>
 			{% for area in areas %}
 				<li>
-					<a href="/areas/{{area.id}}">{{area.name}}</a>
+					<a href="/areas/{{area.id}}.html">{{area.name}}</a>
 				</li>
 			{% endfor %}
 			</ul>
