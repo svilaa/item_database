@@ -302,9 +302,9 @@ def areaPage(request, areaID, format=html):
 
 		creatures_found = SubElement(data, 'Creatures_Found')
 		for creature in creatures:
-			area_object = SubElement(creatures_found, 'Creature')
-			SubElement(creatures_found, 'Creature_ID').text = str(creature.id)
-			SubElement(creatures_found, 'Creature_Name').text = creature.name
+			creature_object = SubElement(creatures_found, 'Creature')
+			SubElement(creature_object, 'Creature_ID').text = str(creature.id)
+			SubElement(creature_object, 'Creature_Name').text = creature.name
 
 		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
