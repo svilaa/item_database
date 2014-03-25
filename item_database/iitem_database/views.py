@@ -58,7 +58,7 @@ def userpage(request, username, format=html):
 		SubElement(data, 'User_Name').text = user.username
 		user_items = SubElement(data, 'User_Items')
 		for userItem in userItems:
-			item_object = SubElement(user_items, 'User_Items')
+			item_object = SubElement(user_items, 'Item')
 			SubElement(item_object, 'Item_ID').text = str(userItem.itemID.id)
 			SubElement(item_object, 'Item_Name').text = userItem.itemID.name
 			SubElement(item_object, 'Quantity').text = str(userItem.quantity)		
