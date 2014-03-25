@@ -1,5 +1,6 @@
 # Create your views here.
 import json as jsn
+from xml.etree.ElementTree import Element, SubElement, tostring
 
 from django.http import HttpResponse, Http404, HttpResponseNotFound
 from django.template import Context
@@ -10,6 +11,8 @@ from django.contrib.auth.models import User
 html = 'html'
 json = 'json'
 xml = 'xml'
+
+format_error = "Format not found."
 
 json_indent_level = 4
 
@@ -49,8 +52,20 @@ def userpage(request, username, format=html):
 			   'Quantity' : userItem.quantity } for userItem in userItems ]
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')), 
 			content_type="application/json")
+	elif format == xml:
+		data = Element('User')
+		SubElement(data, 'User_ID').text = str(user.id)
+		SubElement(data, 'User_Name').text = user.username
+		user_items = SubElement(data, 'User_Items')
+		for userItem in userItems:
+			item_object = SubElement(user_items, 'User_Items')
+			SubElement(item_object, 'Item_ID').text = str(userItem.itemID.id)
+			SubElement(item_object, 'Item_Name').text = userItem.itemID.name
+			SubElement(item_object, 'Quantity').text = str(userItem.quantity)		
+
+		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
-		return HttpResponseNotFound('format not found')
+		return HttpResponseNotFound(format_error)
 
 def createList(typeList, titlehead, listUrl, format):
 
@@ -67,11 +82,20 @@ def createList(typeList, titlehead, listUrl, format):
 	elif format == json:
 		json_response = {}
 		elem_type = lis[0].__class__.__name__
-		json_response[titlehead] = [ { (elem_type + ' ID') : elem.id , ielem_type + ' Name' : elem.name } for elem in lis ]
+		json_response[titlehead] = [ { (elem_type + ' ID') : elem.id , elem_type + ' Name' : elem.name } for elem in lis ]
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')), 
 			content_type="application/json")
+	elif format == xml:
+		data = Element(listUrl.title())
+		className = typeList.__name__
+		for list_element in lis:
+			element_object = SubElement(data, className.title())
+			SubElement(element_object, className+'_ID').text = str(list_element.id)
+			SubElement(element_object, className+'_Name').text = list_element.name	
+
+		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
-		return HttpResponseNotFound('format not found')
+		return HttpResponseNotFound(format_error)
 
 def itemClassListPage(request, format=html):
 	return createList(ItemClass, 'Item classes', 'itemclasses', format)
@@ -115,8 +139,27 @@ def itemPage(request, itemID, format=html):
 
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')), 
 			content_type="application/json")
+	elif format == xml:
+		data = Element('Item')
+		SubElement(data, 'Item_ID').text = str(item.id)
+		SubElement(data, 'Item_Name').text = item.name
+		SubElement(data, 'Description').text = item.desc
+		found_in = SubElement(data, 'Found_in')
+		for area in areas:
+			area_object = SubElement(found_in, 'Area')
+			SubElement(area_object, 'Area_ID').text = str(area.id)
+			SubElement(area_object, 'Area_Name').text = area.name
+		
+		dropped_by = SubElement(data, 'Dropped_by')
+		for drop in drops:
+			drop_object = SubElement(dropped_by, 'Drop')
+			SubElement(drop_object, 'Creature_ID').text = str(drop.creatureID.id)	
+			SubElement(drop_object, 'Creature_Name').text = drop.creatureID.name
+			SubElement(drop_object, 'Drop_Rate').text = str(drop.dropRate)
+
+		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
-		return HttpResponseNotFound('format not found')
+		return HttpResponseNotFound(format_error)
 
 def itemClassPage(request, classItemID, format=html):
 	try:
@@ -144,8 +187,20 @@ def itemClassPage(request, classItemID, format=html):
 
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')), 
 			content_type="application/json")
+	elif format == xml:
+		data = Element('Item_class')
+		SubElement(data, 'Itemclass_ID').text = str(itemClass.id)
+		SubElement(data, 'Itemclass_Name').text = itemClass.name
+		SubElement(data, 'Description').text = itemClass.desc
+		found_in = SubElement(data, 'Items_in_class')
+		for item in items:
+			area_object = SubElement(found_in, 'Item')
+			SubElement(area_object, 'Item_ID').text = str(item.id)
+			SubElement(area_object, 'Item_Name').text = item.name
+
+		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
-		return HttpResponseNotFound('format not found')
+		return HttpResponseNotFound(format_error)
 
 def creaturePage(request, creatureID, format=html):
 	try:
@@ -179,8 +234,31 @@ def creaturePage(request, creatureID, format=html):
 
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')), 
 			content_type="application/json")
+	elif format == xml:
+		data = Element('Creature')
+		SubElement(data, 'Creature_ID').text = str(creature.id)
+		SubElement(data, 'Creature_Name').text = creature.name
+		SubElement(data, 'Description').text = creature.desc
+		SubElement(data, 'Is_Unique').text = str(creature.unique)
+		SubElement(data, 'Danger_Level').text = str(creature.dangerLevel)
+		SubElement(data, 'Souls_Obtained').text = str(creature.souls)
+		
+		enemy_drops = SubElement(data, 'Dropped_by')
+		for drop in drops:
+			drop_object = SubElement(enemy_drops, 'Drops')
+			SubElement(drop_object, 'Item_ID').text = str(drop.itemID.id)	
+			SubElement(drop_object, 'Item_Name').text = drop.itemID.name
+			SubElement(drop_object, 'Drop_Rate').text = str(drop.dropRate)
+
+		found_in = SubElement(data, 'Found_in')
+		for area in areas:
+			area_object = SubElement(found_in, 'Area')
+			SubElement(area_object, 'Area_ID').text = str(area.id)
+			SubElement(area_object, 'Area_Name').text = area.name
+
+		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
-		return HttpResponseNotFound('format not found')
+		return HttpResponseNotFound(format_error)
 
 def areaPage(request, areaID, format=html):
 	try:
@@ -210,5 +288,24 @@ def areaPage(request, areaID, format=html):
 			[ {'Creature ID' : creature.id ,'Creature Name' : creature.name } for creature in creatures ]
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')),
 			content_type="application/json")
+	elif format == xml:
+		data = Element('Area')
+		SubElement(data, 'Area_ID').text = str(area.id)
+		SubElement(data, 'Area_Name').text = area.name
+		SubElement(data, 'Description').text = area.desc
+		
+		items_found = SubElement(data, 'Items_Found')
+		for item in items:
+			item_object = SubElement(items_found, 'Item')
+			SubElement(item_object, 'Item_ID').text = str(item.id)	
+			SubElement(item_object, 'Item_Name').text = item.name
+
+		creatures_found = SubElement(data, 'Creatures_Found')
+		for creature in creatures:
+			area_object = SubElement(creatures_found, 'Creature')
+			SubElement(creatures_found, 'Creature_ID').text = str(creature.id)
+			SubElement(creatures_found, 'Creature_Name').text = creature.name
+
+		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
-		return HttpResponseNotFound('format not found')
+		return HttpResponseNotFound(format_error)
