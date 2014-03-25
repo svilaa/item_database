@@ -67,7 +67,7 @@ def createList(typeList, titlehead, listUrl, format):
 	elif format == json:
 		json_response = {}
 		elem_type = lis[0].__class__.__name__
-		json_response[titlehead] = [ { (elem_type + ' ID') : elem.id , ielem_type + ' Name' : elem.name } for elem in lis ]
+		json_response[titlehead] = [ { (elem_type + ' ID') : elem.id , elem_type + ' Name' : elem.name } for elem in lis ]
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')), 
 			content_type="application/json")
 	else:
