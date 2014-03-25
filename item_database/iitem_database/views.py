@@ -44,7 +44,9 @@ def userpage(request, username, format=html):
 		json_response['User ID'] = user.id
 		json_response['User Name'] = user.username
 		json_response['User Items'] = \
-			[ {'Item ID' : userItem.itemID.id, 'Item Name' : userItem.itemID.name } for userItem in userItems ]
+			[ {'Item ID' : userItem.itemID.id, 
+			   'Item Name' : userItem.itemID.name, 
+			   'Quantity' : userItem.quantity } for userItem in userItems ]
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')), 
 			content_type="application/json")
 	else:
@@ -202,7 +204,7 @@ def areaPage(request, areaID, format=html):
 		json_response = {}
 		json_response['Area ID'] = area.id
 		json_response['Area Name'] = area.name
-		json_response['Objects Found'] = [ {'Item ID' : item.id,'Item Name' : item.name} for item in items ]
+		json_response['Items Found'] = [ {'Item ID' : item.id,'Item Name' : item.name} for item in items ]
 		json_response['Creatures Found'] = \
 			[ {'Creature ID' : creature.id ,'Creature Name' : creature.name } for creature in creatures ]
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')),
