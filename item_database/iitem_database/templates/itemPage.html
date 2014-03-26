@@ -7,6 +7,7 @@
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{item.name}}</p>
 			<p>Description: {{item.desc}}</p>
+			<p>Class: <a href="/itemclasses/{{item.typeID.id}}.html">{{item.typeID.name}}</a></p>
 			<p>The item can be found in:</p>
 			{% if areas %}
 			<ul>

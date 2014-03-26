@@ -17,6 +17,10 @@ format_error = "Format not found."
 json_indent_level = 4
 
 def mainpage(request):
+	"""
+	  The / page. Can reaches all the models of the application except
+	  the user page
+	"""
 	template = get_template('mainpage.html')
 	variables = Context({
 		'titlehead': 'Item database',
@@ -27,6 +31,9 @@ def mainpage(request):
 	return HttpResponse(output)
 
 def userpage(request, username, format=html):
+	"""
+	  Shows the items that this user has
+	"""
 	try:
 		user = User.objects.get(username=username)
 	except:
@@ -68,7 +75,13 @@ def userpage(request, username, format=html):
 		return HttpResponseNotFound(format_error)
 
 def createList(typeList, titlehead, listUrl, format):
-
+	"""
+	  A function that create a list in terms of its parameters
+	   typeList: the class of the objects
+	   titlehead: the header that will be showed in the page
+	   listUrl: permits the creation of the route
+	   format: the type of page that will be renderized
+	"""
 	lis = typeList.objects.all()
 	if format == html:
 		template = get_template('list.html')
@@ -98,18 +111,34 @@ def createList(typeList, titlehead, listUrl, format):
 		return HttpResponseNotFound(format_error)
 
 def itemClassListPage(request, format=html):
+	"""
+	  Shows the list of item classes in the application
+	"""
 	return createList(ItemClass, 'Item classes', 'itemclasses', format)
 
 def areaListPage(request, format=html):
+	"""
+	  Shows the list of areas in the application
+	"""
 	return createList(Area, 'Areas', 'areas', format)
 
 def creatureListPage(request, format=html):
+	"""
+	  Shows the list of creatures in the application
+	"""
 	return createList(Creature, 'Creatures', 'creatures', format)
 
 def itemListPage(request, format=html):
+	"""
+	  Shows the list of items in the application
+	"""
 	return createList(Item, 'Items', 'items', format)
 
 def itemPage(request, itemID, format=html):
+	"""
+	  Shows a specific item characterized by his name, description,
+	  type, areas that can be found and creatures that drop it.
+	"""
 	try:
 		item = Item.objects.get(id=itemID)
 	except:
@@ -133,6 +162,7 @@ def itemPage(request, itemID, format=html):
 		json_response['Item ID'] = item.id
 		json_response['Item Name'] = item.name 
 		json_response['Description'] = item.desc
+		json_response['Class'] = { 'Class ID' : item.typeID.id, 'Class Name' : item.typeID.name }
 		json_response['Found in'] = [ { 'Area ID' : area.id, 'Area name' : area.name } for area in areas ]
 		json_response['Dropped by'] = [ { 'Creature ID' : drop.creatureID.id, 
 			'Creature Name' : drop.creatureID.name , 'Drop Rate' : drop.dropRate } for drop in drops ]
@@ -144,6 +174,9 @@ def itemPage(request, itemID, format=html):
 		SubElement(data, 'Item_ID').text = str(item.id)
 		SubElement(data, 'Item_Name').text = item.name
 		SubElement(data, 'Description').text = item.desc
+		item_class = SubElement(data, 'Class')
+		SubElement(item_class, 'Class_ID').text = str(item.typeID.id)
+		SubElement(item_class, 'Class_Name').text = item.typeID.name
 		found_in = SubElement(data, 'Found_in')
 		for area in areas:
 			area_object = SubElement(found_in, 'Area')
@@ -162,6 +195,10 @@ def itemPage(request, itemID, format=html):
 		return HttpResponseNotFound(format_error)
 
 def itemClassPage(request, itemClassID, format=html):
+	"""
+	  Shows a specific item characterized by his name, description,
+	  areas that can be found and creatures that drop it.
+	"""
 	try:
 		itemClass = ItemClass.objects.get(id=itemClassID)
 	except:
@@ -203,6 +240,11 @@ def itemClassPage(request, itemClassID, format=html):
 		return HttpResponseNotFound(format_error)
 
 def creaturePage(request, creatureID, format=html):
+	"""
+	  Shows a specific creature characterized by his name, description,
+	  if it is unique, the danger level, the number of souls dropped,
+	  areas that can be found and items that drops.
+	"""
 	try:
 		creature = Creature.objects.get(id=creatureID)
 	except:
@@ -261,6 +303,10 @@ def creaturePage(request, creatureID, format=html):
 		return HttpResponseNotFound(format_error)
 
 def areaPage(request, areaID, format=html):
+	"""
+	  Shows a specific area characterized by his name, description,
+	  areas that can be found and creatures that drop it.
+	"""
 	try:
 		area = Area.objects.get(id=areaID)
 	except:
