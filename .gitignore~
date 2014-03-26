@@ -1,5 +1,6 @@
 *.log
 *.pot
 *.pyc
-*.db
+*~
+database.db
 local_settings.py
