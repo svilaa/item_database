@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login'),
     
     url(r'^itemclasses.(?P<format>\w+)$', itemClassListPage),
-    url(r'^itemclasses/(?P<classItemID>\w+).(?P<format>\w+)$', itemClassPage),
+    url(r'^itemclasses/(?P<itemClassID>\w+).(?P<format>\w+)$', itemClassPage),
 
     url(r'^areas.(?P<format>\w+)$', areaListPage),
     url(r'^areas/(?P<areaID>\w+).(?P<format>\w+)$', areaPage),
