@@ -161,9 +161,9 @@ def itemPage(request, itemID, format=html):
 	else:
 		return HttpResponseNotFound(format_error)
 
-def itemClassPage(request, classItemID, format=html):
+def itemClassPage(request, itemClassID, format=html):
 	try:
-		itemClass = ItemClass.objects.get(id=classItemID)
+		itemClass = ItemClass.objects.get(id=itemClassID)
 	except:
 		raise Http404('Item class not found.')
 
