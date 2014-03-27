@@ -92,10 +92,8 @@ def userpage(request, username, format=html):
 	else:
 		return HttpResponseNotFound(format_error)
 
-"""
+
 def addUserItem(request, username):
-	f = AddUserItemForm()
-	print f
 	try:
 		user = User.objects.get(username=username)
 	except:
@@ -107,8 +105,10 @@ def addUserItem(request, username):
 			itemForm.save()
 	else:
 		itemForm = AddUserItemForm()
-	return render(request, 'addItemPage.html', {'itemForm': itemForm})
-"""
+	return render(request, 'addItemPage.html', 
+		{'itemForm': itemForm},
+		context_instance=RequestContext(request))
+
 
 def createList(typeList, titlehead, listUrl, format):
 	"""
