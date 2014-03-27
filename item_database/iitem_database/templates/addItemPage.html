@@ -1,0 +1,14 @@
+<html>
+	<head>
+			<title> Add Item</title>
+	</head>
+	<body>
+		<a href="/user/{{user.username}}.html">Return to your page</a>
+		<h1> Add Item </h1>
+		<form method="post" action="">
+			{% csrf_token %}
+			{{ itemForm.as_p }}
+			<p><input type='submit' value='Add'/></p>
+		</form>
+	</body>
+</html>

@@ -2,11 +2,17 @@
 import json as jsn
 from xml.etree.ElementTree import Element, SubElement, tostring
 
-from django.http import HttpResponse, Http404, HttpResponseNotFound
-from django.template import Context
+from django.http import HttpResponse, Http404, HttpResponseNotFound, HttpResponseRedirect
+from django.template import Context, RequestContext
 from django.template.loader import get_template
 from iitem_database.models import ItemClass, Area, Creature, Item, Found, UserItems, Drops
 from django.contrib.auth.models import User
+
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, render_to_response
+
+from iitem_database.forms import AddUserItemForm
 
 html = 'html'
 json = 'json'
@@ -15,6 +21,18 @@ xml = 'xml'
 format_error = "Format not found."
 
 json_indent_level = 4
+
+def register(request):
+	if request.method == 'POST':
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			new_user = form.save()
+			return HttpResponseRedirect("/")
+	else:
+		form = UserCreationForm()
+	return render_to_response("registration/register.html",
+		{'form': form},
+		context_instance=RequestContext(request))
 
 def mainpage(request):
 	"""
@@ -44,7 +62,7 @@ def userpage(request, username, format=html):
 	if format == html:
 		template = get_template('userpage.html')
 		variables = Context({
-			'username': username,
+			'user': user,
 			'userItems': userItems,
 			})
 		output = template.render(variables)
@@ -73,6 +91,24 @@ def userpage(request, username, format=html):
 		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
 		return HttpResponseNotFound(format_error)
+
+"""
+def addUserItem(request, username):
+	f = AddUserItemForm()
+	print f
+	try:
+		user = User.objects.get(username=username)
+	except:
+		raise Http404('User not found.')
+
+	if request.method == 'POST':
+		itemForm = AddUserItemForm(request.POST)
+		if itemForm.is_valid():
+			itemForm.save()
+	else:
+		itemForm = AddUserItemForm()
+	return render(request, 'addItemPage.html', {'itemForm': itemForm})
+"""
 
 def createList(typeList, titlehead, listUrl, format):
 	"""

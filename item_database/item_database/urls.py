@@ -20,6 +20,9 @@ urlpatterns = patterns('',
     url(r'^$', mainpage, name='home'),
     url(r'^user/(?P<username>\w+).(?P<format>\w+)$', userpage),
     url(r'^login/$', 'django.contrib.auth.views.login'),
+    url(r'^register/$', register),
+
+    #url(r'^user/(?P<username>\w+)/additem/$', addUserItem),
     
     url(r'^itemclasses.(?P<format>\w+)$', itemClassListPage),
     url(r'^itemclasses/(?P<itemClassID>\w+).(?P<format>\w+)$', itemClassPage),
