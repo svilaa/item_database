@@ -13,6 +13,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, render_to_response
 
 from iitem_database.forms import AddUserItemForm
+from django.contrib.auth import logout
 
 html = 'html'
 json = 'json'
@@ -33,6 +34,10 @@ def register(request):
 	return render_to_response("registration/register.html",
 		{'form': form},
 		context_instance=RequestContext(request))
+
+def logoutUser(request):
+	logout(request)
+	return HttpResponseRedirect('/')
 
 def mainpage(request):
 	"""
@@ -102,7 +107,10 @@ def addUserItem(request, username):
 	if request.method == 'POST':
 		itemForm = AddUserItemForm(request.POST)
 		if itemForm.is_valid():
-			itemForm.save()
+			item = itemForm.save(commit=False)
+			item.userID = user
+			item.save()
+			return HttpResponseRedirect('/user/'+user.username+".html")
 	else:
 		itemForm = AddUserItemForm()
 	return render(request, 'addItemPage.html', 

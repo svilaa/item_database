@@ -21,7 +21,8 @@ urlpatterns = patterns('',
     url(r'^user/(?P<username>\w+).(?P<format>\w+)$', userpage),
     url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^register/$', register),
-
+    url(r'^logout/$', logoutUser),
+    
     url(r'^user/(?P<username>\w+)/additem/$', addUserItem),
     
     url(r'^itemclasses.(?P<format>\w+)$', itemClassListPage),
