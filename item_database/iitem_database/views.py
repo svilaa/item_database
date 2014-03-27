@@ -24,6 +24,9 @@ format_error = "Format not found."
 json_indent_level = 4
 
 def register(request):
+	"""
+	  Permits new users to enter in the application through a formulary
+	"""
 	if request.method == 'POST':
 		form = UserCreationForm(request.POST)
 		if form.is_valid():
@@ -36,6 +39,9 @@ def register(request):
 		context_instance=RequestContext(request))
 
 def logoutUser(request):
+	"""
+	  Closes the current session of the user
+	"""
 	logout(request)
 	return HttpResponseRedirect('/')
 
@@ -99,6 +105,10 @@ def userpage(request, username, format=html):
 
 
 def addUserItem(request, username):
+	"""
+	  Request the user to select a item and a quantity.
+	  This data will be show in his item list.
+	"""
 	try:
 		user = User.objects.get(username=username)
 	except:
