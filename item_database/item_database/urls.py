@@ -25,6 +25,12 @@ urlpatterns = patterns('',
     
     url(r'^user/(?P<username>\w+)/additem/$', addUserItem),
     
+    url(r'^additem/$', addItem),
+    url(r'^addarea/$', addArea),
+    url(r'^addcreature/$', addCreature),
+
+    url(r'^deleteitem/(?P<itemID>\w+)$', deleteItem),
+
     url(r'^itemclasses.(?P<format>\w+)$', itemClassListPage),
     url(r'^itemclasses/(?P<itemClassID>\w+).(?P<format>\w+)$', itemClassPage),
 

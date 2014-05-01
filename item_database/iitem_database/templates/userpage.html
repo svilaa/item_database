@@ -11,6 +11,14 @@
 			<p>Name: {{user.username}}</p>
 				<a href="/user/{{user.username}}/additem/">Add item</a>
 			<p>Items:</p>
+
+			<p>Add content</p>
+			<ul>
+				<li><a href="/additem/">Add new item</a></li>
+				<li><a href="/addarea/">Add new area</a></li>
+				<li><a href="/addcreature/">Add new creature</a></li>
+			</ul>
+
 			{% if userItems %}
 				<ul>
 				{% for userItem in userItems %}

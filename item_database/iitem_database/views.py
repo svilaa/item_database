@@ -12,7 +12,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, render_to_response
 
-from iitem_database.forms import AddUserItemForm
+from iitem_database.forms import AddUserItemForm, AddItemForm, AddAreaForm, AddCreatureForm
 from django.contrib.auth import logout
 
 html = 'html'
@@ -123,9 +123,59 @@ def addUserItem(request, username):
 			return HttpResponseRedirect('/user/'+user.username+".html")
 	else:
 		itemForm = AddUserItemForm()
-	return render(request, 'addItemPage.html', 
-		{'itemForm': itemForm},
+	return render(request, 'addContentPage.html', 
+		{'contentForm': itemForm, 'content' : 'user item'},
 		context_instance=RequestContext(request))
+
+def addItem(request):
+	"""
+	  NEW
+	"""
+	if request.method == 'POST':
+		itemForm = AddItemForm(request.POST)
+		if itemForm.is_valid():
+			itemForm.save()
+			return HttpResponseRedirect('/items.html')
+	else:
+		itemForm = AddItemForm()
+	return render(request, 'addContentPage.html', 
+		{'contentForm': itemForm, 'content' : 'item'},
+		context_instance=RequestContext(request))
+
+
+def addArea(request):
+	"""
+	  NEW
+	"""
+	if request.method == 'POST':
+		areaForm = AddAreaForm(request.POST)
+		if areaForm.is_valid():
+			areaForm.save()
+			return HttpResponseRedirect('/areas.html')
+	else:
+		areaForm = AddAreaForm()
+	return render(request, 'addContentPage.html', 
+		{'contentForm': areaForm, 'content' : 'area'},
+		context_instance=RequestContext(request))
+
+def addCreature(request):
+	"""
+	  NEW
+	"""
+	if request.method == 'POST':
+		creatureForm = AddCreatureForm(request.POST)
+		if creatureForm.is_valid():
+			creatureForm.save()
+			return HttpResponseRedirect('/creatures.html')
+	else:
+		creatureForm = AddCreatureForm()
+	return render(request, 'addContentPage.html', 
+		{'contentForm': creatureForm, 'content' : 'creature'},
+		context_instance=RequestContext(request))
+
+def deleteItem(request, itemID):
+	item = Item.objects.get(id=itemID).delete()
+	return HttpResponseRedirect('/items.html')
 
 
 def createList(typeList, titlehead, listUrl, format):

@@ -1,13 +1,13 @@
 <html>
 	<head>
-			<title> Add Item</title>
+			<title> Add {{content}}</title>
 	</head>
 	<body>
 		<a href="/user/{{user.username}}.html">Return to your page</a>
-		<h1> Add Item </h1>
+		<h1> Add {{content}} </h1>
 		<form method="post" action="">
 			{% csrf_token %}
-			{{ itemForm.as_p }}
+			{{ contentForm.as_p }}
 			<p><input type='submit' value='Add'/></p>
 		</form>
 	</body>
