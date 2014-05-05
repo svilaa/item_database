@@ -29,7 +29,9 @@ urlpatterns = patterns('',
     url(r'^addarea/$', addArea),
     url(r'^addcreature/$', addCreature),
 
-    url(r'^deleteitem/(?P<itemID>\w+)$', deleteItem),
+    url(r'^deleteitems/(?P<itemID>\w+)$', deleteItem),
+	url(r'^deleteareas/(?P<areaID>\w+)$', deleteArea),
+	url(r'^deletecreatures/(?P<creatureID>\w+)$', deleteCreature),
 
     url(r'^itemclasses.(?P<format>\w+)$', itemClassListPage),
     url(r'^itemclasses/(?P<itemClassID>\w+).(?P<format>\w+)$', itemClassPage),

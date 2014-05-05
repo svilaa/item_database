@@ -177,6 +177,14 @@ def deleteItem(request, itemID):
 	item = Item.objects.get(id=itemID).delete()
 	return HttpResponseRedirect('/items.html')
 
+def deleteArea(request, areaID):
+	area = Area.objects.get(id=areaID).delete()
+	return HttpResponseRedirect('/areas.html')
+
+def deleteCreature(request, creatureID):
+	creature = Creature.objects.get(id=creatureID).delete()
+	return HttpResponseRedirect('/creatures.html')
+
 
 def createList(typeList, titlehead, listUrl, format):
 	"""

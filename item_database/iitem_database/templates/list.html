@@ -8,7 +8,7 @@
 			<ul>
 			{% for element in element_list %}
 				<li>
-					<a href="{{listUrl}}/{{element.id}}.html">{{element.name}}</a> - <a href="deleteitem/{{element.id}}"> Delete </a>
+					<a href="{{listUrl}}/{{element.id}}.html">{{element.name}}</a> - <a href="delete{{listUrl}}/{{element.id}}"> Delete </a>
 				</li>
 			{% endfor %}
 			</ul>
