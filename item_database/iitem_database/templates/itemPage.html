@@ -1,8 +1,6 @@
-<html>
-	<head>
-			<title> {{titlehead}} - {{item.name}}</title>
-	</head>
-	<body>
+{% extends "base.html" %}
+
+{% block content %}
 		<a href="/items.html">Return to items</a>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{item.name}}</p>
@@ -33,5 +31,9 @@
 			{% else %}
 				<p>Nobody</p>
 			{% endif %}
-	</body>
-</html>
+
+{% endblock %}
+
+{% block footer %}
+		<p>Item created by {{item.user}} on {{ item.date }}<p>
+{% endblock %}

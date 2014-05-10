@@ -1,19 +1,9 @@
-<html>
-	<head>
-		<title>{{ titlehead }}</title>
-	</head>
-	<body>
+{% extends "base.html" %}
+
+{% block content %}
 		<h1>{{ pagetitle }}</h1>
-		{% if user.username %}
-			<p>Welcome {{user.username}}</p>
-			<p> <a href="/user/{{user.username}}.html">Your items</a></p>
-			<br />
-			<p> <a href="/items.html">Items</a></p>
-			<p> <a href="/itemclasses.html">Item classes</a></p>
-			<p> <a href="/areas.html">Areas</a></p>
-			<p> <a href="/creatures.html">Creatures</a></p>
-		{% else %}
-			<p>Wellcome nobody. You must <a href="/login/">sign in</a> or <a href="/register/">sign up</p>
-		{% endif %}
-	</body>
-</html>
+{% endblock %}
+
+{% block footer %}
+		<p>Web in development</p>
+{% endblock %}

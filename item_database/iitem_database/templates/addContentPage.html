@@ -1,14 +1,14 @@
-<html>
-	<head>
-			<title> Add {{content}}</title>
-	</head>
-	<body>
-		<a href="/user/{{user.username}}.html">Return to your page</a>
+{% extends "base.html" %}
+
+{% block content %}
+
 		<h1> Add {{content}} </h1>
 		<form method="post" action="">
 			{% csrf_token %}
 			{{ contentForm.as_p }}
 			<p><input type='submit' value='Add'/></p>
-		</form>
-	</body>
-</html>
+{% endblock %}
+
+{% block footer %}
+		<p>Web in development</p>
+{% endblock %}

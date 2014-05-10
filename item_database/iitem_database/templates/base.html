@@ -1,0 +1,54 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="{% static "style/base.css" %}" />
+    <title>{% block title %}Item_database{% endblock %}</title>
+</head>
+
+<body>
+
+<div id="header">
+    {% block header %}
+        <h1> ITEM_DATABASE </h1>
+        {% if user.username %}
+            <p>User {{ user.username }} (<a href="/logout">logout</a>)</p>
+        {% else %}
+            <p><a href="login/">Sign in</a></p>
+            <p><a href="register/">Sign up</a></p>
+        {% endif %}
+    {% endblock %}
+</div>
+
+
+<div id="sidebar">
+    {% block sidebar %}
+        <ul>
+            {% if user.username %}
+                <p> <a href="/user/{{user.username}}.html">Your userpage</a></p>
+                <br />
+            {% endif %}
+                <p> <a href="/items.html">Items</a></p>
+                <p> <a href="/itemclasses.html">Item classes</a></p>
+                <p> <a href="/areas.html">Areas</a></p>
+                <p> <a href="/creatures.html">Creatures</a></p>
+
+        </ul>
+    {% endblock %}
+</div>
+
+<div id="content">
+    {% block content %}
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% endblock %}
+</div>
+
+<div id="footer">
+    {% block footer %}{% endblock %}
+</div>
+
+</body>
+</html>

@@ -1,34 +1,36 @@
-<html>
-	<head>
-			<title> {{titlehead}} </title>
-	</head>
-	<body>
+{% extends "base.html" %}
+
+{% block content %}
+
 		<p><a href="/">Return to mainpage</a>
 		<br/><br/>
 		<a href="/logout/">Log out</a>
 		</p>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{user.username}}</p>
-				<a href="/user/{{user.username}}/additem/">Add item</a>
-			<p>Items:</p>
 
-			<p>Add content</p>
-			<ul>
-				<li><a href="/additem/">Add new item</a></li>
-				<li><a href="/addarea/">Add new area</a></li>
-				<li><a href="/addcreature/">Add new creature</a></li>
-			</ul>
-
+			<p>Your items (<a href="/user/{{user.username}}/additem/">add</a>)</p>
 			{% if userItems %}
 				<ul>
 				{% for userItem in userItems %}
 					<li>
-						<a href="/items/{{userItem.itemID.id}}.html">{{userItem.itemID.name}}</a> - {{userItem.quantity}}
+						<a href="/items/{{userItem.itemID.id}}.html">{{userItem.itemID.name}}</a> - {{userItem.quantity}} - <a href="/user/{{user.username}}/deleteitem/{{userItem.itemID.id}}">Delete</a>
 					</li>
 				{% endfor %}
 				</ul>
 			{% else %}
 				<p>None</p>
 			{% endif %}
-	</body>
-</html>
+
+			<p>Add content:</p>
+			<ul>
+				<li><a href="/additems/">Add new item</a></li>
+				<li><a href="/addareas/">Add new area</a></li>
+				<li><a href="/addcreatures/">Add new creature</a></li>
+			</ul>
+
+{% endblock %}
+
+{% block footer %}
+		<p>Web in development</p>
+{% endblock %}

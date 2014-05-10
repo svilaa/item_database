@@ -1,16 +1,22 @@
-<html>
-	<head>
-			<title> {{titlehead}} </title>
-	</head>
-	<body>
+{% extends "base.html" %}
+
+{% block content %}
+
 		<a href="/">Return to mainpage</a>
-		<h1> {{titlehead}} </h1>
+		<h1> {{titlehead}} {% if user.username and listUrl != 'itemclasses' %}
+        (<a href="add{{listUrl}}/{{element.id}}">add</a>)
+    {% endif %} </h1>
 			<ul>
 			{% for element in element_list %}
 				<li>
-					<a href="{{listUrl}}/{{element.id}}.html">{{element.name}}</a> - <a href="delete{{listUrl}}/{{element.id}}"> Delete </a>
+					<a href="{{listUrl}}/{{element.id}}.html">{{element.name}}</a>
+					{% if user == element.user %} - <a href="delete{{listUrl}}/{{element.id}}"> Delete </a> {% endif %}
 				</li>
 			{% endfor %}
 			</ul>
-	</body>
-</html>
+
+{% endblock %}
+
+{% block footer %}
+		<p>Web in development</p>
+{% endblock %}

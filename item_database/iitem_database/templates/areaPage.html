@@ -1,8 +1,7 @@
-<html>
-	<head>
-			<title> {{titlehead}} - {{area.name}}</title>
-	</head>
-	<body>
+{% extends "base.html" %}
+
+{% block content %}
+
 		<a href="/areas.html">Return to areas</a>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{area.name}}</p>
@@ -34,5 +33,9 @@
 			{% else %}
 				<p>None</p>
 			{% endif %}
-	</body>
-</html>
+
+{% endblock %}
+
+{% block footer %}
+		<p>Area created by {{area.user}} on {{ area.date }}</p>
+{% endblock %}

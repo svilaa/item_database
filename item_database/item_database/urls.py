@@ -18,30 +18,31 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', mainpage, name='home'),
-    url(r'^user/(?P<username>\w+).(?P<format>\w+)$', userpage),
+    url(r'^user/(?P<username>\w+)\.(?P<format>\w+)$', userpage),
     url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^register/$', register),
     url(r'^logout/$', logoutUser),
     
     url(r'^user/(?P<username>\w+)/additem/$', addUserItem),
-    
-    url(r'^additem/$', addItem),
-    url(r'^addarea/$', addArea),
-    url(r'^addcreature/$', addCreature),
+    url(r'^user/(?P<username>\w+)/deleteitem/(?P<item>\w+)$', deleteUserItem),
+
+    url(r'^additems/$', addItem),
+    url(r'^addareas/$', addArea),
+    url(r'^addcreatures/$', addCreature),
 
     url(r'^deleteitems/(?P<itemID>\w+)$', deleteItem),
-	url(r'^deleteareas/(?P<areaID>\w+)$', deleteArea),
-	url(r'^deletecreatures/(?P<creatureID>\w+)$', deleteCreature),
+    url(r'^deleteareas/(?P<areaID>\w+)$', deleteArea),
+    url(r'^deletecreatures/(?P<creatureID>\w+)$', deleteCreature),
 
-    url(r'^itemclasses.(?P<format>\w+)$', itemClassListPage),
-    url(r'^itemclasses/(?P<itemClassID>\w+).(?P<format>\w+)$', itemClassPage),
+    url(r'^itemclasses\.(?P<format>\w+)$', itemClassListPage),
+    url(r'^itemclasses/(?P<itemClassID>\w+)\.(?P<format>\w+)$', itemClassPage),
 
-    url(r'^areas.(?P<format>\w+)$', areaListPage),
-    url(r'^areas/(?P<areaID>\w+).(?P<format>\w+)$', areaPage),
+    url(r'^areas\.(?P<format>\w+)$', areaListPage),
+    url(r'^areas/(?P<areaID>\w+)\.(?P<format>\w+)$', areaPage),
 
-    url(r'^creatures.(?P<format>\w+)$', creatureListPage),
-    url(r'^creatures/(?P<creatureID>\w+).(?P<format>\w+)$', creaturePage),
+    url(r'^creatures\.(?P<format>\w+)$', creatureListPage),
+    url(r'^creatures/(?P<creatureID>\w+)\.(?P<format>\w+)$', creaturePage),
 
-    url(r'^items.(?P<format>\w+)$', itemListPage),
-    url(r'^items/(?P<itemID>\w+).(?P<format>\w+)$', itemPage),
+    url(r'^items\.(?P<format>\w+)$', itemListPage),
+    url(r'^items/(?P<itemID>\w+)\.(?P<format>\w+)$', itemPage),
 )

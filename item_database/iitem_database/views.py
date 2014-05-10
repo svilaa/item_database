@@ -2,6 +2,8 @@
 import json as jsn
 from xml.etree.ElementTree import Element, SubElement, tostring
 
+from django.contrib.auth.decorators import login_required
+
 from django.http import HttpResponse, Http404, HttpResponseNotFound, HttpResponseRedirect
 from django.template import Context, RequestContext
 from django.template.loader import get_template
@@ -59,6 +61,7 @@ def mainpage(request):
 	output = template.render(variables)
 	return HttpResponse(output)
 
+@login_required(login_url='/login/')
 def userpage(request, username, format=html):
 	"""
 	  Shows the items that this user has
@@ -103,7 +106,7 @@ def userpage(request, username, format=html):
 	else:
 		return HttpResponseNotFound(format_error)
 
-
+@login_required(login_url='/login/')
 def addUserItem(request, username):
 	"""
 	  Request the user to select a item and a quantity.
@@ -116,10 +119,19 @@ def addUserItem(request, username):
 
 	if request.method == 'POST':
 		itemForm = AddUserItemForm(request.POST)
+		
 		if itemForm.is_valid():
 			item = itemForm.save(commit=False)
 			item.userID = user
-			item.save()
+			useritems = UserItems.objects.filter(userID=request.user)
+			non_repeated = True
+			for it in useritems:
+				if it.itemID == item.itemID:
+					print it, item
+					non_repeated = False
+					break
+			if non_repeated:
+				item.save()
 			return HttpResponseRedirect('/user/'+user.username+".html")
 	else:
 		itemForm = AddUserItemForm()
@@ -127,6 +139,16 @@ def addUserItem(request, username):
 		{'contentForm': itemForm, 'content' : 'user item'},
 		context_instance=RequestContext(request))
 
+@login_required(login_url='/login/')
+def deleteUserItem(request, username, item):
+	try:
+		user = User.objects.get(username=username)
+	except:
+		raise Http404('User not found.')
+	item = UserItems.objects.get(userID=user.id, itemID=item).delete()
+	return HttpResponseRedirect('/user/'+username+'.html')
+
+@login_required(login_url='/login/')
 def addItem(request):
 	"""
 	  NEW
@@ -142,7 +164,7 @@ def addItem(request):
 		{'contentForm': itemForm, 'content' : 'item'},
 		context_instance=RequestContext(request))
 
-
+@login_required(login_url='/login/')
 def addArea(request):
 	"""
 	  NEW
@@ -158,6 +180,7 @@ def addArea(request):
 		{'contentForm': areaForm, 'content' : 'area'},
 		context_instance=RequestContext(request))
 
+@login_required(login_url='/login/')
 def addCreature(request):
 	"""
 	  NEW
@@ -173,20 +196,23 @@ def addCreature(request):
 		{'contentForm': creatureForm, 'content' : 'creature'},
 		context_instance=RequestContext(request))
 
+@login_required(login_url='/login/')
 def deleteItem(request, itemID):
 	item = Item.objects.get(id=itemID).delete()
 	return HttpResponseRedirect('/items.html')
 
+@login_required(login_url='/login/')
 def deleteArea(request, areaID):
 	area = Area.objects.get(id=areaID).delete()
 	return HttpResponseRedirect('/areas.html')
 
+@login_required(login_url='/login/')
 def deleteCreature(request, creatureID):
 	creature = Creature.objects.get(id=creatureID).delete()
 	return HttpResponseRedirect('/creatures.html')
 
 
-def createList(typeList, titlehead, listUrl, format):
+def createList(request, typeList, titlehead, listUrl, format):
 	"""
 	  A function that create a list in terms of its parameters
 	   typeList: the class of the objects
@@ -201,6 +227,7 @@ def createList(typeList, titlehead, listUrl, format):
 			'titlehead': titlehead,
 			'element_list': lis,
 			'listUrl': listUrl,
+			'user': request.user
 			})
 		output = template.render(variables)
 		return HttpResponse(output)
@@ -226,25 +253,25 @@ def itemClassListPage(request, format=html):
 	"""
 	  Shows the list of item classes in the application
 	"""
-	return createList(ItemClass, 'Item classes', 'itemclasses', format)
+	return createList(request, ItemClass, 'Item classes', 'itemclasses', format)
 
 def areaListPage(request, format=html):
 	"""
 	  Shows the list of areas in the application
 	"""
-	return createList(Area, 'Areas', 'areas', format)
+	return createList(request, Area, 'Areas', 'areas', format)
 
 def creatureListPage(request, format=html):
 	"""
 	  Shows the list of creatures in the application
 	"""
-	return createList(Creature, 'Creatures', 'creatures', format)
+	return createList(request, Creature, 'Creatures', 'creatures', format)
 
 def itemListPage(request, format=html):
 	"""
 	  Shows the list of items in the application
 	"""
-	return createList(Item, 'Items', 'items', format)
+	return createList(request, Item, 'Items', 'items', format)
 
 def itemPage(request, itemID, format=html):
 	"""

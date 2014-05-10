@@ -1,8 +1,7 @@
-<html>
-	<head>
-			<title> {{titlehead}} - {{creature.name}}</title>
-	</head>
-	<body>
+{% extends "base.html" %}
+
+{% block content %}
+
 		<a href="/creatures.html">Return to creatures</a>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{creature.name}}</p>
@@ -44,5 +43,9 @@
 			{% else %}
 				<p>Nowhere</p>
 			{% endif %}
-	</body>
-</html>
+
+{% endblock %}
+
+{% block footer %}
+		<p>Creature created by {{creature.user}} on {{ creature.date }}</p>
+{% endblock %}

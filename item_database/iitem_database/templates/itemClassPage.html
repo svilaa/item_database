@@ -1,8 +1,7 @@
-<html>
-	<head>
-			<title> {{titlehead}} - {{itemClass.name}}</title>
-	</head>
-	<body>
+{% extends "base.html" %}
+
+{% block content %}
+
 		<a href="/itemclasses.html">Return to item classes</a>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{itemClass.name}}</p>
@@ -19,5 +18,9 @@
 			{% else %}
 				<p>None</p>
 			{% endif %}
-	</body>
-</html>
+
+{% endblock %}
+
+{% block footer %}
+		<p>Item class created by {{itemClass.user}} on {{ itemClass.date }}</p>
+{% endblock %}

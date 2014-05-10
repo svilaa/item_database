@@ -1,0 +1,34 @@
+#header h1
+{
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+#header p
+{
+    margin: 0;
+    padding: 10px;
+    text-align: right;
+}
+
+#content
+{
+    margin-left: 190px;
+    padding: 10px;
+}
+
+#sidebar
+{
+    float: left;
+    width: 190px;
+}
+
+#footer
+{
+    margin: 0;
+    padding: 10px;
+    position:absolute;
+    left: 50%;
+    bottom:0;
+}
