@@ -157,7 +157,8 @@ def quantityUserItem(request, username, item, quantity):
 		raise Http404('User not found.')
 	item = UserItems.objects.get(userID=user.id, itemID=item)
 	item.quantity+=int(quantity)
-	item.save()
+	if item.quantity >= 0:
+		item.save()
 	return HttpResponseRedirect('/user/'+username+'.html')
 
 
