@@ -3,7 +3,9 @@
 {% block content %}
 
 		<a href="/creatures.html">Return to creatures</a>
-		<h1> {{titlehead}} </h1>
+		<h1> {{titlehead}} {% if user == creature.user %}
+        (<a href="/deletecreatures/{{creature.id}}">delete</a>) {% endif %}</h1>
+			<p>Name: {{area.name}}</h1>
 			<p>Name: {{creature.name}}</p>
 			<p>Description: {{creature.desc}}</p>
 			<p>Unique: {% if creature.unique %}

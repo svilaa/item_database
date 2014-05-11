@@ -1,14 +1,14 @@
-<html>
-	<head>
-			<title> Edit {{content}}</title>
-	</head>
-	<body>
+{% extends "base.html" %}
+
+{% block content %}
 		<a href="/items.html">Return to items</a>
 		<h1> Edit {{content}} </h1>
 		<form method="post" action="">
 			{% csrf_token %}
 			{{ contentForm.as_p }}
 			<p><input type='submit' value='Update'/></p>
-		</form>
-	</body>
-</html>
+{% endblock %}
+
+{% block footer %}
+		<p>Web in development</p>
+{% endblock %}

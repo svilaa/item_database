@@ -3,7 +3,8 @@
 {% block content %}
 
 		<a href="/areas.html">Return to areas</a>
-		<h1> {{titlehead}} </h1>
+		<h1> {{titlehead}} {% if user == area.user %}
+        (<a href="/deleteareas/{{area.id}}">delete</a>) {% endif %}</h1>
 			<p>Name: {{area.name}}</p>
 			<p>Description: {{area.desc}}</p>
 			
