@@ -6,7 +6,6 @@ class AddUserItemForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(AddUserItemForm, self).__init__(*args, **kwargs)
 		self.fields['itemID'].label = "Item name"
-		self.fields['desc'].label = "Description"
 
 	class Meta:
 		model = UserItems

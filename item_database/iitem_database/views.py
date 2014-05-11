@@ -214,6 +214,67 @@ def deleteCreature(request, creatureID):
 	return HttpResponseRedirect('/creatures.html')
 
 
+@login_required(login_url='/login/')
+def editItem(request, itemID):
+	"""
+	  NEW
+	"""
+	editItem = Item.objects.get(id=itemID)
+	if request.method == 'POST':
+		itemForm = AddItemForm(request.POST, instance=editItem)
+		if itemForm.is_valid():
+			updatedItem = itemForm.save(commit=False)
+			updatedItem.userID = editItem.user
+			updatedItem.date = editItem.date
+			updatedItem.save()
+			return HttpResponseRedirect('/items/'+itemID+'.html')
+	else:
+		itemForm = AddItemForm()
+	return render(request, 'editContentPage.html', 
+		{'contentForm': itemForm, 'content' : 'Item'},
+		context_instance=RequestContext(request))
+
+
+@login_required(login_url='/login/')
+def editArea(request, areaID):
+	"""
+	  NEW
+	"""
+	editArea = Area.objects.get(id=areaID)
+	if request.method == 'POST':
+		areaForm = AddAreaForm(request.POST, instance=editArea)
+		if areaForm.is_valid():
+			updatedArea = areaForm.save(commit=False)
+			updatedArea.userID = editArea.user
+			updatedArea.date = editArea.date
+			updatedArea.save()
+			return HttpResponseRedirect('/areas/'+areaID+'.html')
+	else:
+		areaForm = AddAreaForm()
+	return render(request, 'editContentPage.html', 
+		{'contentForm': areaForm, 'content' : 'Area'},
+		context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
+def editCreature(request, creatureID):
+	"""
+	  NEW
+	"""
+	editCreature = Creature.objects.get(id=creatureID)
+	if request.method == 'POST':
+		creatureForm = AddCreatureForm(request.POST, instance=editCreature)
+		if creatureForm.is_valid():
+			updatedCreature = creatureForm.save(commit=False)
+			updatedCreature.userID = editCreature.user
+			updatedCreature.date = editCreature.date
+			updatedCreature.save()
+			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
+	else:
+		creatureForm = AddCreatureForm()
+	return render(request, 'editContentPage.html', 
+		{'contentForm': creatureForm, 'content' : 'Creature'},
+		context_instance=RequestContext(request))
+
 def createList(request, typeList, titlehead, listUrl, format):
 	"""
 	  A function that create a list in terms of its parameters

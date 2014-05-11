@@ -4,6 +4,7 @@
 
 		<a href="/areas.html">Return to areas</a>
 		<h1> {{titlehead}} {% if user == area.user %}
+		(<a href="/editareas/{{area.id}}">edit</a>)
         (<a href="/deleteareas/{{area.id}}">delete</a>) {% endif %}</h1>
 			<p>Name: {{area.name}}</p>
 			<p>Description: {{area.desc}}</p>
