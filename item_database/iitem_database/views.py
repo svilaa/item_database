@@ -14,7 +14,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, render_to_response
 
-from iitem_database.forms import AddUserItemForm, AddItemForm, AddAreaForm, AddCreatureForm
+from iitem_database.forms import AddUserItemForm, AddItemForm, AddAreaForm, AddCreatureForm, AddDropForItemForm, AddDropForCreatureForm
 from django.contrib.auth import logout
 
 html = 'html'
@@ -231,7 +231,7 @@ def editItem(request, itemID):
 	else:
 		itemForm = AddItemForm()
 	return render(request, 'editContentPage.html', 
-		{'contentForm': itemForm, 'content' : 'Item'},
+		{'contentForm': itemForm, 'content' : 'item'},
 		context_instance=RequestContext(request))
 
 
@@ -252,7 +252,7 @@ def editArea(request, areaID):
 	else:
 		areaForm = AddAreaForm()
 	return render(request, 'editContentPage.html', 
-		{'contentForm': areaForm, 'content' : 'Area'},
+		{'contentForm': areaForm, 'content' : 'area'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -272,8 +272,51 @@ def editCreature(request, creatureID):
 	else:
 		creatureForm = AddCreatureForm()
 	return render(request, 'editContentPage.html', 
-		{'contentForm': creatureForm, 'content' : 'Creature'},
+		{'contentForm': creatureForm, 'content' : 'creature'},
 		context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
+def addDropForItem(request, itemID):
+	"""
+	  NEW
+	"""
+	item = Item.objects.get(id=itemID)
+	if request.method == 'POST':
+		dropForm = AddDropForItemForm(request.POST)
+		if dropForm.is_valid():
+			drop = dropForm.save(commit=False)
+			drop.itemID = item
+			drop.save()
+			return HttpResponseRedirect('/items/'+itemID+'.html')
+	else:
+		dropForm = AddDropForItemForm()
+	return render(request, 'addContentPage.html', 
+		{'contentForm': dropForm, 'content' : 'drop'},
+		context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
+def addDropForCreature(request, creatureID):
+	"""
+	  NEW
+	"""
+	creature = Creature.objects.get(id=creatureID)
+	if request.method == 'POST':
+		dropForm = AddDropForCreatureForm(request.POST)
+		if dropForm.is_valid():
+			drop = dropForm.save(commit=False)
+			drop.creatureID = creature
+			drop.save()
+			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
+	else:
+		dropForm = AddDropForCreatureForm()
+	return render(request, 'addContentPage.html', 
+		{'contentForm': dropForm, 'content' : 'drop'},
+		context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
+def deleteDrop(request, dropID):
+	drop = Drops.objects.get(id=dropID).delete()
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def createList(request, typeList, titlehead, listUrl, format):
 	"""

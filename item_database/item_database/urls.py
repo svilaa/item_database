@@ -30,6 +30,10 @@ urlpatterns = patterns('',
     url(r'^addareas/$', addArea),
     url(r'^addcreatures/$', addCreature),
 
+    url(r'^adddrop/item/(?P<itemID>\w+)/$', addDropForItem),
+    url(r'^adddrop/creature/(?P<creatureID>\w+)/$', addDropForCreature),
+    url(r'^deletedrop/(?P<dropID>\w+)/$', deleteDrop),
+
     url(r'^deleteitems/(?P<itemID>\w+)$', deleteItem),
     url(r'^deleteareas/(?P<areaID>\w+)$', deleteArea),
     url(r'^deletecreatures/(?P<creatureID>\w+)$', deleteCreature),

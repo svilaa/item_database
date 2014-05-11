@@ -21,12 +21,14 @@
 				<p>Nowhere</p>
 			{% endif %}
 
-			<p>The item is dropped by:</p>
+			<p>The item is dropped by: {% if user == item.user %}
+		(<a href="/adddrop/item/{{item.id}}/">add</a>) {% endif %} </p>
 			{% if drops %}
 			<ul>
 			{% for drop in drops %}
 				<li>
-					<a href="/creatures/{{drop.creatureID.id}}.html">{{drop.creatureID.name}}</a> - {{drop.dropRate}}%
+					<a href="/creatures/{{drop.creatureID.id}}.html">{{drop.creatureID.name}}</a> - {{drop.dropRate}}% {% if user %}
+		(<a href="/deletedrop/{{drop.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}
 			</ul>

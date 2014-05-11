@@ -19,12 +19,14 @@
 			<p>Souls: {{creature.souls}}<p>
 
 
-			<p>Drops:</p>
+			<p>Drops: {% if user == creature.user %}
+		(<a href="/adddrop/creature/{{creature.id}}/">add</a>) {% endif %}</p>
 			{% if drops %}
 			<ul>
 			{% for drop in drops %}
 				<li>
-					<a href="/items/{{drop.itemID.id}}.html">{{drop.itemID.name}}</a> - {{drop.dropRate}}%
+					<a href="/items/{{drop.itemID.id}}.html">{{drop.itemID.name}}</a> - {{drop.dropRate}}% {% if user %}
+		(<a href="/deletedrop/{{drop.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}
 			</ul>
