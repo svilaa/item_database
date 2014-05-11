@@ -14,7 +14,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, render_to_response
 
-from iitem_database.forms import AddUserItemForm, AddItemForm, AddAreaForm, AddCreatureForm, AddDropForItemForm, AddDropForCreatureForm
+from iitem_database.forms import AddUserItemForm, AddItemForm, AddAreaForm, \
+								 AddCreatureForm, AddDropForItemForm, AddDropForCreatureForm
 from django.contrib.auth import logout
 
 html = 'html'
@@ -147,6 +148,18 @@ def deleteUserItem(request, username, item):
 		raise Http404('User not found.')
 	item = UserItems.objects.get(userID=user.id, itemID=item).delete()
 	return HttpResponseRedirect('/user/'+username+'.html')
+
+@login_required(login_url='/login/')
+def quantityUserItem(request, username, item, quantity):
+	try:
+		user = User.objects.get(username=username)
+	except:
+		raise Http404('User not found.')
+	item = UserItems.objects.get(userID=user.id, itemID=item)
+	item.quantity+=int(quantity)
+	item.save()
+	return HttpResponseRedirect('/user/'+username+'.html')
+
 
 @login_required(login_url='/login/')
 def addItem(request):

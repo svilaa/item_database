@@ -14,7 +14,7 @@
 				<ul>
 				{% for userItem in userItems %}
 					<li>
-						<a href="/items/{{userItem.itemID.id}}.html">{{userItem.itemID.name}}</a> - {{userItem.quantity}} - <a href="/user/{{user.username}}/deleteitem/{{userItem.itemID.id}}">Delete</a>
+						<a href="/items/{{userItem.itemID.id}}.html">{{userItem.itemID.name}}</a> = {{userItem.quantity}} ( <a href="/user/{{user.username}}/item/{{userItem.itemID.id}}/quantity/-1">-1</a> <a href="/user/{{user.username}}/item/{{userItem.itemID.id}}/quantity/1">+1</a> <a href="/user/{{user.username}}/deleteitem/{{userItem.itemID.id}}">delete</a>)
 					</li>
 				{% endfor %}
 				</ul>

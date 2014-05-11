@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     
     url(r'^user/(?P<username>\w+)/additem/$', addUserItem),
     url(r'^user/(?P<username>\w+)/deleteitem/(?P<item>\w+)$', deleteUserItem),
+    url(r'^user/(?P<username>\w+)/item/(?P<item>\w+)/quantity/(?P<quantity>-?\d+)$', quantityUserItem),
 
     url(r'^additems/$', addItem),
     url(r'^addareas/$', addArea),
