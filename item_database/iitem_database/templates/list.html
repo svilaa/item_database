@@ -10,7 +10,7 @@
 			{% for element in element_list %}
 				<li>
 					<a href="{{listUrl}}/{{element.id}}.html">{{element.name}}</a>
-					{% if user == element.user %} - <a href="delete{{listUrl}}/{{element.id}}"> Delete </a> {% endif %}
+					{% if user == element.user and listUrl != 'itemclasses' %} - <a href="delete{{listUrl}}/{{element.id}}"> Delete </a> {% endif %}
 				</li>
 			{% endfor %}
 			</ul>

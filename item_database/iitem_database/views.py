@@ -156,7 +156,9 @@ def addItem(request):
 	if request.method == 'POST':
 		itemForm = AddItemForm(request.POST)
 		if itemForm.is_valid():
-			itemForm.save()
+			item = itemForm.save(commit=False)
+			item.userID = request.user
+			item.save()
 			return HttpResponseRedirect('/items.html')
 	else:
 		itemForm = AddItemForm()
@@ -293,6 +295,7 @@ def itemPage(request, itemID, format=html):
 			'item': item,
 			'areas': areas,
 			'drops': drops,
+			'user': request.user,
 			})
 		output = template.render(variables)
 		return HttpResponse(output)
@@ -351,6 +354,7 @@ def itemClassPage(request, itemClassID, format=html):
 			'titlehead': 'Item class',
 			'itemClass': itemClass,
 			'items': items,
+			'user': request.user,
 			})
 		output = template.render(variables)
 		return HttpResponse(output)
@@ -399,6 +403,7 @@ def creaturePage(request, creatureID, format=html):
 			'creature': creature,
 			'drops': drops,
 			'areas': areas,
+			'user': request.user,
 			})
 		output = template.render(variables)
 		return HttpResponse(output)
@@ -461,6 +466,7 @@ def areaPage(request, areaID, format=html):
 			'area': area,
 			'items': items,
 			'creatures': creatures,
+			'user': request.user,
 			})
 		output = template.render(variables)
 		return HttpResponse(output)
