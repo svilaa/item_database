@@ -10,12 +10,14 @@
 			<p>Description: {{area.desc}}</p>
 			
 
-			<p>Items in this area:</p>
-			{% if items %}
+			<p>Items in this area: {% if user == area.user %}
+		(<a href="/addfound/area/{{area.id}}/">add</a>) {% endif %}</p>
+			{% if founds %}
 			<ul>
-			{% for item in items %}
+			{% for found in founds %}
 				<li>
-					<a href="/items/{{item.id}}.html">{{item.name}}</a>
+					<a href="/items/{{found.itemID.id}}.html">{{found.itemID.name}}</a> {% if user == area.user %}
+		(<a href="/deletefound/{{found.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}
 			</ul>

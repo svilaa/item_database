@@ -15,7 +15,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, render_to_response
 
 from iitem_database.forms import AddUserItemForm, AddItemForm, AddAreaForm, \
-								 AddCreatureForm, AddDropForItemForm, AddDropForCreatureForm
+								 AddCreatureForm, AddDropForItemForm, AddDropForCreatureForm, \
+								 AddFoundForItemForm, AddFoundForAreaForm
 from django.contrib.auth import logout
 
 from rest_framework.decorators import api_view
@@ -180,7 +181,7 @@ def addItem(request):
 		itemForm = AddItemForm(request.POST)
 		if itemForm.is_valid():
 			item = itemForm.save(commit=False)
-			item.userID = request.user
+			item.user = request.user
 			item.save()
 			return HttpResponseRedirect('/items.html')
 	else:
@@ -197,6 +198,8 @@ def addArea(request):
 	if request.method == 'POST':
 		areaForm = AddAreaForm(request.POST)
 		if areaForm.is_valid():
+			area = areaForm.save(commit=False)
+			area.user = request.user
 			areaForm.save()
 			return HttpResponseRedirect('/areas.html')
 	else:
@@ -213,6 +216,8 @@ def addCreature(request):
 	if request.method == 'POST':
 		creatureForm = AddCreatureForm(request.POST)
 		if creatureForm.is_valid():
+			creature = creatureForm.save(commit=False)
+			creature.user = request.user
 			creatureForm.save()
 			return HttpResponseRedirect('/creatures.html')
 	else:
@@ -341,6 +346,49 @@ def deleteDrop(request, dropID):
 	drop = Drops.objects.get(id=dropID).delete()
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+@login_required(login_url='/login/')
+def addFoundForItem(request, itemID):
+	"""
+	  NEW
+	"""
+	item = Item.objects.get(id=itemID)
+	if request.method == 'POST':
+		foundForm = AddFoundForItemForm(request.POST)
+		if foundForm.is_valid():
+			found = foundForm.save(commit=False)
+			found.itemID = item
+			found.save()
+			return HttpResponseRedirect('/items/'+itemID+'.html')
+	else:
+		foundForm = AddFoundForItemForm()
+	return render(request, 'addContentPage.html', 
+		{'contentForm': foundForm, 'content' : 'area found'},
+		context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
+def addFoundForArea(request, areaID):
+	"""
+	  NEW
+	"""
+	area = Area.objects.get(id=areaID)
+	if request.method == 'POST':
+		foundForm = AddFoundForAreaForm(request.POST)
+		if foundForm.is_valid():
+			found = foundForm.save(commit=False)
+			found.areaID = area
+			found.save()
+			return HttpResponseRedirect('/areas/'+areaID+'.html')
+	else:
+		foundForm = AddFoundForAreaForm()
+	return render(request, 'addContentPage.html', 
+		{'contentForm': foundForm, 'content' : 'item found'},
+		context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
+def deleteFound(request, foundID):
+	found = Found.objects.get(id=foundID).delete()
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 def createList(request, typeList, titlehead, listUrl, format):
 	"""
 	  A function that create a list in terms of its parameters
@@ -413,6 +461,7 @@ def itemPage(request, itemID, format=html):
 		raise Http404('Item not found.')
 
 	areas = Area.objects.filter(found__itemID=item.id)
+	founds = Found.objects.filter(itemID=item.id)
 	drops = Drops.objects.filter(itemID=itemID)
 	
 	if format == html:
@@ -420,7 +469,7 @@ def itemPage(request, itemID, format=html):
 		variables = Context({
 			'titlehead': 'Item',
 			'item': item,
-			'areas': areas,
+			'founds': founds,
 			'drops': drops,
 			'user': request.user,
 			})
@@ -584,6 +633,7 @@ def areaPage(request, areaID, format=html):
 		raise Http404('Area not found.')
 
 	items = Item.objects.filter(found__areaID=area.id)
+	founds = Found.objects.filter(areaID=area.id)
 	creatures = Creature.objects.filter(areas=area.id)
 		
 	if format == html:
@@ -591,7 +641,7 @@ def areaPage(request, areaID, format=html):
 		variables = Context({
 			'titlehead': 'Area',
 			'area': area,
-			'items': items,
+			'founds': founds,
 			'creatures': creatures,
 			'user': request.user,
 			})
