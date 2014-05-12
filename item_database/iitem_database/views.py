@@ -18,6 +18,15 @@ from iitem_database.forms import AddUserItemForm, AddItemForm, AddAreaForm, \
 								 AddCreatureForm, AddDropForItemForm, AddDropForCreatureForm
 from django.contrib.auth import logout
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+from rest_framework import generics, permissions
+from iitem_database.permissions import IsOwnerOrReadOnly
+from iitem_database.serializers import ItemClassSerializer, AreaSerializer, CreatureSerializer, \
+										ItemSerializer, FoundSerializer, UserItemsSerializer, DropsSerializer, \
+										UserSerializer
+
 html = 'html'
 json = 'json'
 xml = 'xml'
@@ -618,3 +627,102 @@ def areaPage(request, areaID, format=html):
 		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
 		return HttpResponseNotFound(format_error)
+
+#RESTFULL API Views
+
+#API Root View
+@api_view(('GET',))
+def api_index(request, format=None):
+	return Response({
+		'users': reverse('user-list', request=request, format=format),
+		'items': reverse('item-list', request=request, format=format),
+		'item classes': reverse('itemclass-list', request=request, format=format),
+		'areas': reverse('area-list', request=request, format=format),
+		'creatures': reverse('creature-list', request=request, format=format),
+		'founds': reverse('found-list', request=request, format=format),
+		'users items': reverse('useritems-list', request=request, format=format),
+		'drops': reverse('drops-list', request=request, format=format),
+	})
+
+api_permissions_owner = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
+api_permissions_authoro = (permissions.IsAuthenticatedOrReadOnly,)
+
+class APIUserList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = User
+	serializer_class = UserSerializer
+
+class APIUserDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = api_permissions_owner
+	model = User
+	serializer_class = UserSerializer
+
+class APIItemClassList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = ItemClass
+	serializer_class = ItemClassSerializer
+
+class APIItemClassDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = api_permissions_owner
+	model = ItemClass
+	serializer_class = ItemClassSerializer
+
+class APIAreaList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = Area
+	serializer_class = AreaSerializer
+
+class APIAreaDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = api_permissions_owner
+	model = Area
+	serializer_class = AreaSerializer
+
+class APICreatureList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = Creature
+	serializer_class = CreatureSerializer
+
+class APICreatureDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = api_permissions_owner
+	model = Creature
+	serializer_class = CreatureSerializer
+
+class APIItemList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = Item
+	serializer_class = ItemSerializer
+
+class APIItemDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = api_permissions_owner
+	model = Item
+	serializer_class = ItemSerializer
+
+class APIFoundList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = Found
+	serializer_class = FoundSerializer
+
+class APIFoundDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = api_permissions_authoro
+	model = Found
+	serializer_class = FoundSerializer
+
+class APIUserItemsList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = UserItems
+	serializer_class = UserItemsSerializer
+
+class APIUserItemsDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = api_permissions_owner
+	model = UserItems
+	serializer_class = UserItemsSerializer
+
+class APIDropsList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = Drops
+	serializer_class = DropsSerializer
+
+class APIDropsDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = api_permissions_authoro
+	model = Drops
+	serializer_class = DropsSerializer

@@ -54,4 +54,6 @@ urlpatterns = patterns('',
 
     url(r'^items\.(?P<format>\w+)$', itemListPage),
     url(r'^items/(?P<itemID>\w+)\.(?P<format>\w+)$', itemPage),
+
+    url(r'^api/', include('iitem_database.urls')),
 )
