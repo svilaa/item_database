@@ -39,6 +39,10 @@ urlpatterns = patterns('',
     url(r'^addfound/area/(?P<areaID>\w+)/$', addFoundForArea),
     url(r'^deletefound/(?P<foundID>\w+)/$', deleteFound),
 
+    url(r'^addencountered/creature/(?P<creatureID>\w+)/$', addEncounteredForCreature),
+    url(r'^addencountered/area/(?P<areaID>\w+)/$', addEncounteredForArea),
+    url(r'^deleteencountered/(?P<encounteredID>\w+)/$', deleteEncountered),
+
     url(r'^deleteitems/(?P<itemID>\w+)$', deleteItem),
     url(r'^deleteareas/(?P<areaID>\w+)$', deleteArea),
     url(r'^deletecreatures/(?P<creatureID>\w+)$', deleteCreature),

@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from iitem_database.models import UserItems, Item, Area, Creature, Drops, Found
+from iitem_database.models import UserItems, Item, Area, Creature, Drops, Found, Encountered
 
 class AddUserItemForm(ModelForm):
 	def __init__(self, *args, **kwargs):
@@ -38,7 +38,7 @@ class AddCreatureForm(ModelForm):
 
 	class Meta:
 		model = Creature
-		fields = ('name', 'desc', 'dangerLevel', 'souls', 'unique', 'areas')
+		fields = ('name', 'desc', 'dangerLevel', 'souls', 'unique')
 
 class AddDropForItemForm(ModelForm):
 	def __init__(self, *args, **kwargs):
@@ -75,3 +75,19 @@ class AddFoundForAreaForm(ModelForm):
 	class Meta:
 		model = Found
 		fields = ('itemID',)
+
+class AddEncounteredForCreatureForm(ModelForm):
+	def __init__(self, *args, **kwargs):
+		super(AddEncounteredForCreatureForm, self).__init__(*args, **kwargs)
+
+	class Meta:
+		model = Encountered
+		fields = ('area',)
+
+class AddEncounteredForAreaForm(ModelForm):
+	def __init__(self, *args, **kwargs):
+		super(AddEncounteredForAreaForm, self).__init__(*args, **kwargs)
+
+	class Meta:
+		model = Encountered
+		fields = ('creature',)

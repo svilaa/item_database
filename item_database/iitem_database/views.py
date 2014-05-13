@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseNotFound, HttpResponseRedirect
 from django.template import Context, RequestContext
 from django.template.loader import get_template
-from iitem_database.models import ItemClass, Area, Creature, Item, Found, UserItems, Drops
+from iitem_database.models import ItemClass, Area, Creature, Item, Found, UserItems, Drops, Encountered
 from django.contrib.auth.models import User
 
 from django import forms
@@ -16,7 +16,8 @@ from django.shortcuts import render, render_to_response
 
 from iitem_database.forms import AddUserItemForm, AddItemForm, AddAreaForm, \
 								 AddCreatureForm, AddDropForItemForm, AddDropForCreatureForm, \
-								 AddFoundForItemForm, AddFoundForAreaForm
+								 AddFoundForItemForm, AddFoundForAreaForm, AddEncounteredForCreatureForm, \
+								 AddEncounteredForAreaForm
 from django.contrib.auth import logout
 
 from rest_framework.decorators import api_view
@@ -389,6 +390,51 @@ def deleteFound(request, foundID):
 	found = Found.objects.get(id=foundID).delete()
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
+@login_required(login_url='/login/')
+def addEncounteredForCreature(request, creatureID):
+	"""
+	  NEW
+	"""
+	creature = Creature.objects.get(id=creatureID)
+	if request.method == 'POST':
+		encounteredForm = AddEncounteredForCreatureForm(request.POST)
+		if encounteredForm.is_valid():
+			encountered = encounteredForm.save(commit=False)
+			encountered.creature = creature
+			encountered.save()
+			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
+	else:
+		encounteredForm = AddEncounteredForCreatureForm()
+	return render(request, 'addContentPage.html', 
+		{'contentForm': AddEncounteredForCreatureForm, 'content' : 'area'},
+		context_instance=RequestContext(request))
+
+@login_required(login_url='/login/')
+def addEncounteredForArea(request, areaID):
+	"""
+	  NEW
+	"""
+	area = Area.objects.get(id=areaID)
+	if request.method == 'POST':
+		encounteredForm = AddEncounteredForAreaForm(request.POST)
+		if encounteredForm.is_valid():
+			encountered = encounteredForm.save(commit=False)
+			encountered.area = area
+			encountered.save()
+			return HttpResponseRedirect('/areas/'+areaID+'.html')
+	else:
+		encounteredForm = AddEncounteredForAreaForm()
+	return render(request, 'addContentPage.html', 
+		{'contentForm': AddEncounteredForAreaForm, 'content' : 'creature'},
+		context_instance=RequestContext(request))
+
+
+@login_required(login_url='/login/')
+def deleteEncountered(request, encounteredID):
+	encountered = Encountered.objects.get(id=encounteredID).delete()
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 def createList(request, typeList, titlehead, listUrl, format):
 	"""
 	  A function that create a list in terms of its parameters
@@ -571,6 +617,7 @@ def creaturePage(request, creatureID, format=html):
 
 	drops = Drops.objects.filter(creatureID=creatureID)
 	areas = creature.areas.all()
+	encountereds = Encountered.objects.filter(creature=creatureID)
 
 	if format == html:
 		template = get_template('creaturePage.html')
@@ -578,7 +625,7 @@ def creaturePage(request, creatureID, format=html):
 			'titlehead': 'Creature',
 			'creature': creature,
 			'drops': drops,
-			'areas': areas,
+			'encountereds': encountereds,
 			'user': request.user,
 			})
 		output = template.render(variables)
@@ -635,14 +682,17 @@ def areaPage(request, areaID, format=html):
 	items = Item.objects.filter(found__areaID=area.id)
 	founds = Found.objects.filter(areaID=area.id)
 	creatures = Creature.objects.filter(areas=area.id)
-		
+	encountereds = Encountered.objects.filter(area=area.id)
+	
+	print request.user
+
 	if format == html:
 		template = get_template('areaPage.html')
 		variables = Context({
 			'titlehead': 'Area',
 			'area': area,
 			'founds': founds,
-			'creatures': creatures,
+			'encountereds': encountereds,
 			'user': request.user,
 			})
 		output = template.render(variables)

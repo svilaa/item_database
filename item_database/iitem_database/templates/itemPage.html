@@ -9,7 +9,7 @@
 			<p>Description: {{item.desc}}</p>
 			<p>Class: <a href="/itemclasses/{{item.typeID.id}}.html">{{item.typeID.name}}</a></p>
 
-			<p>The item can be found in: {% if user == item.user %}
+			<p>The item can be found in: {% if user.username %}
 		(<a href="/addfound/item/{{item.id}}/">add</a>) {% endif %}</p>
 			{% if founds %}
 			<ul>
@@ -24,7 +24,7 @@
 				<p>Nowhere</p>
 			{% endif %}
 
-			<p>The item is dropped by: {% if user == item.user %}
+			<p>The item is dropped by: {% if user.username %}
 		(<a href="/adddrop/item/{{item.id}}/">add</a>) {% endif %} </p>
 			{% if drops %}
 			<ul>

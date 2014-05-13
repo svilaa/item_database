@@ -58,12 +58,16 @@ class Creature(models.Model):
 	dangerLevel = models.IntegerField()
 	souls = models.PositiveIntegerField()
 	unique = models.BooleanField()
-	areas = models.ManyToManyField(Area, blank=True)
+	areas = models.ManyToManyField(Area, blank=True, through='Encountered')
 	user = models.ForeignKey(User, default=get_default_user)
 	date = models.DateField(default=date.today)
 	
 	def __unicode__(self):
 		return self.name
+
+class Encountered(models.Model):
+	creature = models.ForeignKey(Creature)
+	area = models.ForeignKey(Area)
 
 
 class Drops(models.Model):
