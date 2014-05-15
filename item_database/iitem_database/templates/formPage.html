@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-		<h1> Add {{content}} </h1>
+		<h1> {{content}} </h1>
 		<form method="post" action="">
 			{% csrf_token %}
-			{{ contentForm.as_p }}
-			<p><input type='submit' value='Add'/></p>
+			{{ form.as_p }}
+			<p><input type='submit' value={{value}} /></p>
 {% endblock %}
 
 {% block footer %}

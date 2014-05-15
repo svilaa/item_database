@@ -140,8 +140,8 @@ def addUserItem(request, username):
 			return HttpResponseRedirect('/user/'+user.username+".html")
 	else:
 		itemForm = AddUserItemForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': itemForm, 'content' : 'user item'},
+	return render(request, 'formPage.html', 
+		{'form': itemForm, 'content' : 'Add user item'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -180,8 +180,9 @@ def addItem(request):
 			return HttpResponseRedirect('/items.html')
 	else:
 		itemForm = AddItemForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': itemForm, 'content' : 'item'},
+	return render(request, 'formPage.html', 
+		{'form': itemForm, 'content' : 'Add item',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -198,8 +199,9 @@ def addArea(request):
 			return HttpResponseRedirect('/areas.html')
 	else:
 		areaForm = AddAreaForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': areaForm, 'content' : 'area'},
+	return render(request, 'formPage.html', 
+		{'form': areaForm, 'content' : 'Add area',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -216,8 +218,9 @@ def addCreature(request):
 			return HttpResponseRedirect('/creatures.html')
 	else:
 		creatureForm = AddCreatureForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': creatureForm, 'content' : 'creature'},
+	return render(request, 'formPage.html', 
+		{'form': creatureForm, 'content' : 'Add creature',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -252,8 +255,9 @@ def editItem(request, itemID):
 			return HttpResponseRedirect('/items/'+itemID+'.html')
 	else:
 		itemForm = AddItemForm()
-	return render(request, 'editContentPage.html', 
-		{'contentForm': itemForm, 'content' : 'item'},
+	return render(request, 'formPage.html', 
+		{'form': itemForm, 'content' : 'Edit item',
+		 'value': 'Update'},
 		context_instance=RequestContext(request))
 
 
@@ -273,8 +277,9 @@ def editArea(request, areaID):
 			return HttpResponseRedirect('/areas/'+areaID+'.html')
 	else:
 		areaForm = AddAreaForm()
-	return render(request, 'editContentPage.html', 
-		{'contentForm': areaForm, 'content' : 'area'},
+	return render(request, 'formPage.html', 
+		{'form': areaForm, 'content' : 'Edit Area',
+		 'value': 'Update'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -293,8 +298,9 @@ def editCreature(request, creatureID):
 			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
 	else:
 		creatureForm = AddCreatureForm()
-	return render(request, 'editContentPage.html', 
-		{'contentForm': creatureForm, 'content' : 'creature'},
+	return render(request, 'formPage.html', 
+		{'form': creatureForm, 'content' : 'Edit creature',
+		 'value': 'Update'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -313,8 +319,9 @@ def addDropForItem(request, itemID):
 			return HttpResponseRedirect('/items/'+itemID+'.html')
 	else:
 		dropForm = AddDropForItemForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': dropForm, 'content' : 'drop'},
+	return render(request, 'formPage.html', 
+		{'form': dropForm, 'content' : 'Add drop',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -333,8 +340,9 @@ def addDropForCreature(request, creatureID):
 			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
 	else:
 		dropForm = AddDropForCreatureForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': dropForm, 'content' : 'drop'},
+	return render(request, 'formPage.html', 
+		{'form': dropForm, 'content' : 'Add drop',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -358,8 +366,9 @@ def addFoundForItem(request, itemID):
 			return HttpResponseRedirect('/items/'+itemID+'.html')
 	else:
 		foundForm = AddFoundForItemForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': foundForm, 'content' : 'area found'},
+	return render(request, 'formPage.html', 
+		{'form': foundForm, 'content' : 'Add area found',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -378,8 +387,9 @@ def addFoundForArea(request, areaID):
 			return HttpResponseRedirect('/areas/'+areaID+'.html')
 	else:
 		foundForm = AddFoundForAreaForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': foundForm, 'content' : 'item found'},
+	return render(request, 'formPage.html', 
+		{'form': foundForm, 'content' : 'Add item found',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -404,8 +414,9 @@ def addEncounteredForCreature(request, creatureID):
 			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
 	else:
 		encounteredForm = AddEncounteredForCreatureForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': AddEncounteredForCreatureForm, 'content' : 'area'},
+	return render(request, 'formPage.html', 
+		{'form': AddEncounteredForCreatureForm, 'content' : 'Add area',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
@@ -424,8 +435,9 @@ def addEncounteredForArea(request, areaID):
 			return HttpResponseRedirect('/areas/'+areaID+'.html')
 	else:
 		encounteredForm = AddEncounteredForAreaForm()
-	return render(request, 'addContentPage.html', 
-		{'contentForm': AddEncounteredForAreaForm, 'content' : 'creature'},
+	return render(request, 'formPage.html', 
+		{'form': AddEncounteredForAreaForm, 'content' : 'Add creature',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
 
 

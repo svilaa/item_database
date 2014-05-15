@@ -28,7 +28,7 @@ class Item(models.Model):
 	desc = models.TextField(max_length=400)
 	creatures = models.ManyToManyField('Creature', blank=True, through='Drops')
 	areas = models.ManyToManyField('Area', blank=True, through='Found')
-	typeID = models.ForeignKey(ItemClass, related_name='item type')
+	typeID = models.ForeignKey(ItemClass)
 	user = models.ForeignKey(User, default=get_default_user)
 	date = models.DateField(default=date.today)
 
