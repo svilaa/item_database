@@ -1,5 +1,6 @@
 # Create your views here.
 import json as jsn
+from datetime import date
 from xml.etree.ElementTree import Element, SubElement, tostring
 
 from django.contrib.auth.decorators import login_required
@@ -773,41 +774,57 @@ class APIItemClassList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
 	model = ItemClass
 	serializer_class = ItemClassSerializer
+	def pre_save(self, obj):
+		obj.date = date.today()
 
 class APIItemClassDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = ItemClass
 	serializer_class = ItemClassSerializer
+	def pre_save(self, obj):
+		obj.date = date.today()
 
 class APIAreaList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
 	model = Area
 	serializer_class = AreaSerializer
+	def pre_save(self, obj):
+		obj.date = date.today()
 
 class APIAreaDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = Area
 	serializer_class = AreaSerializer
+	def pre_save(self, obj):
+		obj.date = date.today()
 
 class APICreatureList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
 	model = Creature
 	serializer_class = CreatureSerializer
+	def pre_save(self, obj):
+		obj.date = date.today()
 
 class APICreatureDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = Creature
 	serializer_class = CreatureSerializer
+	def pre_save(self, obj):
+		obj.date = date.today()
 
 class APIItemList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
 	model = Item
 	serializer_class = ItemSerializer
+	def pre_save(self, obj):
+		obj.date = date.today()
 
 class APIItemDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = Item
 	serializer_class = ItemSerializer
+	def pre_save(self, obj):
+		obj.date = date.today()
 
 class APIFoundList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro

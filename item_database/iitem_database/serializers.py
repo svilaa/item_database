@@ -9,23 +9,27 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 		fields = ('url', 'id', 'username', 'useritems_set')
 
 class ItemClassSerializer(serializers.HyperlinkedModelSerializer):
+	date = serializers.DateTimeField(read_only=True)
 	class Meta:
 		model = ItemClass
 		fields = ('url', 'id', 'name', 'desc', 'user', 'date', 'item_set')
 
 class AreaSerializer(serializers.HyperlinkedModelSerializer):
+	date = serializers.DateTimeField(read_only=True)
 	class Meta:
 		model = Area
 		fields = ('url', 'id', 'name', 'desc', 'user', \
 			'date', 'item_set', 'creature_set')
 
 class CreatureSerializer(serializers.HyperlinkedModelSerializer):
+	date = serializers.DateTimeField(read_only=True)
 	class Meta:
 		model = Creature
 		fields = ('url', 'id', 'name', 'desc', 'dangerLevel', \
 			'souls', 'unique', 'user', 'date', 'areas', 'item_set')
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
+	date = serializers.DateTimeField(read_only=True)
 	class Meta:
 		model = Item
 		fields = ('url', 'id', 'name', 'desc', 'typeID', \
