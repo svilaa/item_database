@@ -31,7 +31,7 @@
 			<ul>
 			{% for encountered in encountereds %}
 				<li>
-					<a href="/creatures/{{encountered.creature.id}}.html">{{encountered.creature.name}}</a> {% if user %}
+					<a href="/creatures/{{encountered.creature.id}}.html">{{encountered.creature.name}}</a> {% if user.username %}
 		(<a href="/deleteencountered/{{encountered.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}

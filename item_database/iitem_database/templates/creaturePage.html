@@ -41,7 +41,7 @@
 			<ul>
 			{% for encountered in encountereds %}
 				<li>
-					<a href="/areas/{{encountered.area.id}}.html">{{encountered.area.name}}</a> {% if user %}
+					<a href="/areas/{{encountered.area.id}}.html">{{encountered.area.name}}</a> {% if user.username %}
 		(<a href="/deleteencountered/{{encountered.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}

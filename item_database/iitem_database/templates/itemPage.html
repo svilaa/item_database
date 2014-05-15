@@ -30,7 +30,7 @@
 			<ul>
 			{% for drop in drops %}
 				<li>
-					<a href="/creatures/{{drop.creatureID.id}}.html">{{drop.creatureID.name}}</a> - {{drop.dropRate}}% {% if user %}
+					<a href="/creatures/{{drop.creatureID.id}}.html">{{drop.creatureID.name}}</a> - {{drop.dropRate}}% {% if user.username %}
 		(<a href="/deletedrop/{{drop.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}

@@ -135,14 +135,7 @@ def addUserItem(request, username):
 		if itemForm.is_valid():
 			item = itemForm.save(commit=False)
 			item.userID = user
-			useritems = UserItems.objects.filter(userID=request.user)
-			non_repeated = True
-			for it in useritems:
-				if it.itemID == item.itemID:
-					print it, item
-					non_repeated = False
-					break
-			if non_repeated:
+			if not UserItems.objects.filter(userID=request.user).filter(itemID=item.itemID).exists():
 				item.save()
 			return HttpResponseRedirect('/user/'+user.username+".html")
 	else:
@@ -315,7 +308,8 @@ def addDropForItem(request, itemID):
 		if dropForm.is_valid():
 			drop = dropForm.save(commit=False)
 			drop.itemID = item
-			drop.save()
+			if not Drops.objects.filter(itemID=itemID).filter(creatureID=drop.creatureID).exists():
+				drop.save()
 			return HttpResponseRedirect('/items/'+itemID+'.html')
 	else:
 		dropForm = AddDropForItemForm()
@@ -334,7 +328,8 @@ def addDropForCreature(request, creatureID):
 		if dropForm.is_valid():
 			drop = dropForm.save(commit=False)
 			drop.creatureID = creature
-			drop.save()
+			if not Drops.objects.filter(creatureID=creatureID).filter(itemID=drop.itemID).exists():
+				drop.save()
 			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
 	else:
 		dropForm = AddDropForCreatureForm()
@@ -358,7 +353,8 @@ def addFoundForItem(request, itemID):
 		if foundForm.is_valid():
 			found = foundForm.save(commit=False)
 			found.itemID = item
-			found.save()
+			if not Found.objects.filter(itemID=itemID).filter(areaID=found.areaID).exists():
+				found.save()
 			return HttpResponseRedirect('/items/'+itemID+'.html')
 	else:
 		foundForm = AddFoundForItemForm()
@@ -377,7 +373,8 @@ def addFoundForArea(request, areaID):
 		if foundForm.is_valid():
 			found = foundForm.save(commit=False)
 			found.areaID = area
-			found.save()
+			if not Found.objects.filter(areaID=areaID).filter(itemID=found.itemID).exists():
+				found.save()
 			return HttpResponseRedirect('/areas/'+areaID+'.html')
 	else:
 		foundForm = AddFoundForAreaForm()
@@ -402,7 +399,8 @@ def addEncounteredForCreature(request, creatureID):
 		if encounteredForm.is_valid():
 			encountered = encounteredForm.save(commit=False)
 			encountered.creature = creature
-			encountered.save()
+			if not Encountered.objects.filter(creatureID=creatureID).filter(area=encountered.area).exists():
+				encountered.save()
 			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
 	else:
 		encounteredForm = AddEncounteredForCreatureForm()
@@ -421,7 +419,8 @@ def addEncounteredForArea(request, areaID):
 		if encounteredForm.is_valid():
 			encountered = encounteredForm.save(commit=False)
 			encountered.area = area
-			encountered.save()
+			if not Encountered.objects.filter(areaID=areaID).filter(creature=encountered.creature).exists():
+				encountered.save()
 			return HttpResponseRedirect('/areas/'+areaID+'.html')
 	else:
 		encounteredForm = AddEncounteredForAreaForm()
