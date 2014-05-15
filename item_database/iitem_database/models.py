@@ -28,7 +28,7 @@ class Item(models.Model):
 	desc = models.TextField(max_length=400)
 	creatures = models.ManyToManyField('Creature', blank=True, through='Drops')
 	areas = models.ManyToManyField('Area', blank=True, through='Found')
-	typeID = models.ForeignKey(ItemClass)
+	typeID = models.ForeignKey(ItemClass, related_name='item type')
 	user = models.ForeignKey(User, default=get_default_user)
 	date = models.DateField(default=date.today)
 
@@ -68,8 +68,8 @@ class Creature(models.Model):
 		return self.name
 
 class Encountered(models.Model):
-	creature = models.ForeignKey(Creature)
-	area = models.ForeignKey(Area)
+	creature = models.ForeignKey(Creature, related_name='c1')
+	area = models.ForeignKey(Area, related_name='area1')
 
 
 class Drops(models.Model):

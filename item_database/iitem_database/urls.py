@@ -8,13 +8,14 @@ from iitem_database.views import APICreatureList, APICreatureDetail
 from iitem_database.views import APIFoundList, APIFoundDetail
 from iitem_database.views import APIUserItemsList, APIUserItemsDetail
 from iitem_database.views import APIDropsList, APIDropsDetail
+from iitem_database.views import APIEncounteredList, APIEncounteredDetail
 
 urlpatterns = patterns('',
 	#REST API URLS
 	url(r'^$', 'iitem_database.views.api_index', name='api_root'),
 
-	url(r'user/$', APIItemList.as_view(), name='user-list'),
-	url(r'user/(?P<pk>\d+)/$', APIItemDetail.as_view(), name='user-detail'),
+	url(r'user/$', APIUserList.as_view(), name='user-list'),
+	url(r'user/(?P<pk>\d+)/$', APIUserDetail.as_view(), name='user-detail'),
 
 	url(r'item/$', APIItemList.as_view(), name='item-list'),
 	url(r'item/(?P<pk>\d+)/$', APIItemDetail.as_view(), name='item-detail'),
@@ -36,6 +37,9 @@ urlpatterns = patterns('',
 
 	url(r'drops/$', APIDropsList.as_view(), name='drops-list'),
 	url(r'drops/(?P<pk>\d+)/$', APIDropsDetail.as_view(), name='drops-detail'),
+
+	url(r'encounter/$', APIEncounteredList.as_view(), name='encountered-list'),
+	url(r'encounter/(?P<pk>\d+)/$', APIEncounteredDetail.as_view(), name='encountered-detail'),
 
 	url(r'^login/', include('rest_framework.urls',
     	namespace='rest_framework')),

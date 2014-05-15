@@ -27,7 +27,7 @@ from rest_framework import generics, permissions
 from iitem_database.permissions import IsOwnerOrReadOnly
 from iitem_database.serializers import ItemClassSerializer, AreaSerializer, CreatureSerializer, \
 										ItemSerializer, FoundSerializer, UserItemsSerializer, DropsSerializer, \
-										UserSerializer
+										UserSerializer, EncounteredSerializer
 
 html = 'html'
 json = 'json'
@@ -741,6 +741,7 @@ def api_index(request, format=None):
 		'founds': reverse('found-list', request=request, format=format),
 		'users items': reverse('useritems-list', request=request, format=format),
 		'drops': reverse('drops-list', request=request, format=format),
+		'encoutered' : reverse('encountered-list', request=request, format=format),
 	})
 
 api_permissions_owner = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
@@ -825,3 +826,13 @@ class APIDropsDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_authoro
 	model = Drops
 	serializer_class = DropsSerializer
+
+class APIEncounteredList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = Encountered
+	serializer_class = EncounteredSerializer
+
+class APIEncounteredDetail(generics.RetrieveUpdateDestroyAPIView):
+	permission_classes = api_permissions_authoro
+	model = Encountered
+	serializer_class = EncounteredSerializer
