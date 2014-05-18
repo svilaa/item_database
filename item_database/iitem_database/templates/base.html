@@ -15,10 +15,10 @@
     {% block header %}
         <h1> <a href="/">ITEM_DATABASE</a> </h1>
         {% if user.username %}
-            <p>User {{ user.username }} (<a href="/logout">logout</a>)</p>
+            <p>User {{ user.username }} (<a href="/accounts/logout/?next=/">logout</a>)</p>
         {% else %}
-            <p><a href="/login/">Sign in</a></p>
-            <p><a href="/register/">Sign up</a></p>
+            <p><a href="/accounts/login/?next=/">Sign in</a></p>
+            <p><a href="/accounts/register/?next=/">Sign up</a></p>
         {% endif %}
     {% endblock %}
 </div>

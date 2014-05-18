@@ -4,8 +4,8 @@
 
 		<a href="/creatures.html">Return to creatures</a>
 		<h1> {{titlehead}} {% if user == creature.user %}
-			(<a href="/editcreatures/{{creature.id}}">edit</a>)
-        (<a href="/deletecreatures/{{creature.id}}">delete</a>) {% endif %}</h1>
+			(<a href="/creatures/edit/{{creature.id}}">edit</a>)
+        (<a href="/creatures/delete/{{creature.id}}">delete</a>) {% endif %}</h1>
 			<p>Name: {{creature.name}}</p>
 			<p>Description: {{creature.desc}}</p>
 			<p>Unique: {% if creature.unique %}

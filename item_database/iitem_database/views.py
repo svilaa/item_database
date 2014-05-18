@@ -30,6 +30,12 @@ from iitem_database.serializers import ItemClassSerializer, AreaSerializer, Crea
 										ItemSerializer, FoundSerializer, UserItemsSerializer, DropsSerializer, \
 										UserSerializer, EncounteredSerializer
 
+from django.utils.decorators import method_decorator
+from django.views.generic import DetailView
+from django.views.generic.edit import CreateView, UpdateView
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
+
 html = 'html'
 json = 'json'
 xml = 'xml'
@@ -37,6 +43,19 @@ xml = 'xml'
 format_error = "Format not found."
 
 json_indent_level = 4
+
+class LoginRequiredMixin(object):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+
+class CheckIsOwnerMixin(object):
+    def get_object(self, *args, **kwargs):
+        obj = super(CheckIsOwnerMixin, self).get_object(*args, **kwargs)
+        if not obj.user == self.request.user:
+            raise PermissionDenied
+        return obj
+
 
 def register(request):
 	"""
@@ -52,13 +71,6 @@ def register(request):
 	return render_to_response("registration/register.html",
 		{'form': form},
 		context_instance=RequestContext(request))
-
-def logoutUser(request):
-	"""
-	  Closes the current session of the user
-	"""
-	logout(request)
-	return HttpResponseRedirect('/')
 
 def mainpage(request):
 	"""
@@ -119,6 +131,7 @@ def userpage(request, username, format=html):
 	else:
 		return HttpResponseNotFound(format_error)
 
+
 @login_required(login_url='/login/')
 def addUserItem(request, username):
 	"""
@@ -142,8 +155,10 @@ def addUserItem(request, username):
 	else:
 		itemForm = AddUserItemForm()
 	return render(request, 'formPage.html', 
-		{'form': itemForm, 'content' : 'Add user item'},
+		{'form': itemForm, 'content' : 'Add user item',
+		 'value': 'Add'},
 		context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login/')
 def deleteUserItem(request, username, item):
@@ -166,63 +181,50 @@ def quantityUserItem(request, username, item, quantity):
 		item.save()
 	return HttpResponseRedirect('/user/'+username+'.html')
 
+class ItemCreate(LoginRequiredMixin, CreateView):
+	model = Item
+	template_name = 'formPage.html'
+	form_class = AddItemForm
 
-@login_required(login_url='/login/')
-def addItem(request):
-	"""
-	  NEW
-	"""
-	if request.method == 'POST':
-		itemForm = AddItemForm(request.POST)
-		if itemForm.is_valid():
-			item = itemForm.save(commit=False)
-			item.user = request.user
-			item.save()
-			return HttpResponseRedirect('/items.html')
-	else:
-		itemForm = AddItemForm()
-	return render(request, 'formPage.html', 
-		{'form': itemForm, 'content' : 'Add item',
-		 'value': 'Add'},
-		context_instance=RequestContext(request))
+	def get_context_data(self, **kwargs):
+		context = super(ItemCreate, self).get_context_data(**kwargs)
+		context['content'] = 'Add item'
+		context['value'] = 'Add' 
+		return context
 
-@login_required(login_url='/login/')
-def addArea(request):
-	"""
-	  NEW
-	"""
-	if request.method == 'POST':
-		areaForm = AddAreaForm(request.POST)
-		if areaForm.is_valid():
-			area = areaForm.save(commit=False)
-			area.user = request.user
-			areaForm.save()
-			return HttpResponseRedirect('/areas.html')
-	else:
-		areaForm = AddAreaForm()
-	return render(request, 'formPage.html', 
-		{'form': areaForm, 'content' : 'Add area',
-		 'value': 'Add'},
-		context_instance=RequestContext(request))
+	def form_valid(self, form):
+		form.instance.user = self.request.user
+		return super(ItemCreate, self).form_valid(form)
 
-@login_required(login_url='/login/')
-def addCreature(request):
-	"""
-	  NEW
-	"""
-	if request.method == 'POST':
-		creatureForm = AddCreatureForm(request.POST)
-		if creatureForm.is_valid():
-			creature = creatureForm.save(commit=False)
-			creature.user = request.user
-			creatureForm.save()
-			return HttpResponseRedirect('/creatures.html')
-	else:
-		creatureForm = AddCreatureForm()
-	return render(request, 'formPage.html', 
-		{'form': creatureForm, 'content' : 'Add creature',
-		 'value': 'Add'},
-		context_instance=RequestContext(request))
+class AreaCreate(LoginRequiredMixin, CreateView):
+	model = Area
+	template_name = 'formPage.html'
+	form_class = AddAreaForm
+
+	def get_context_data(self, **kwargs):
+		context = super(AreaCreate, self).get_context_data(**kwargs)
+		context['content'] = 'Add area'
+		context['value'] = 'Add' 
+		return context
+
+	def form_valid(self, form):
+		form.instance.user = self.request.user
+		return super(AreaCreate, self).form_valid(form)
+
+class CreatureCreate(LoginRequiredMixin, CreateView):
+	model = Item
+	template_name = 'formPage.html'
+	form_class = AddCreatureForm
+
+	def get_context_data(self, **kwargs):
+		context = super(CreatureCreate, self).get_context_data(**kwargs)
+		context['content'] = 'Add creature'
+		context['value'] = 'Add' 
+		return context
+
+	def form_valid(self, form):
+		form.instance.user = self.request.user
+		return super(CreatureCreate, self).form_valid(form)
 
 @login_required(login_url='/login/')
 def deleteItem(request, itemID):
@@ -239,70 +241,38 @@ def deleteCreature(request, creatureID):
 	creature = Creature.objects.get(id=creatureID).delete()
 	return HttpResponseRedirect('/creatures.html')
 
+class EditItem(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
+	model = Item
+	form_class = AddItemForm
+	template_name = 'formPage.html'
 
-@login_required(login_url='/login/')
-def editItem(request, itemID):
-	"""
-	  NEW
-	"""
-	editItem = Item.objects.get(id=itemID)
-	if request.method == 'POST':
-		itemForm = AddItemForm(request.POST, instance=editItem)
-		if itemForm.is_valid():
-			updatedItem = itemForm.save(commit=False)
-			updatedItem.userID = editItem.user
-			updatedItem.date = editItem.date
-			updatedItem.save()
-			return HttpResponseRedirect('/items/'+itemID+'.html')
-	else:
-		itemForm = AddItemForm()
-	return render(request, 'formPage.html', 
-		{'form': itemForm, 'content' : 'Edit item',
-		 'value': 'Update'},
-		context_instance=RequestContext(request))
+	def get_context_data(self, **kwargs):
+		context = super(EditItem, self).get_context_data(**kwargs)
+		context['content'] = 'Edit item'
+		context['value'] = 'Update' 
+		return context
 
+class EditArea(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
+	model = Area
+	form_class = AddAreaForm
+	template_name = 'formPage.html'
 
-@login_required(login_url='/login/')
-def editArea(request, areaID):
-	"""
-	  NEW
-	"""
-	editArea = Area.objects.get(id=areaID)
-	if request.method == 'POST':
-		areaForm = AddAreaForm(request.POST, instance=editArea)
-		if areaForm.is_valid():
-			updatedArea = areaForm.save(commit=False)
-			updatedArea.userID = editArea.user
-			updatedArea.date = editArea.date
-			updatedArea.save()
-			return HttpResponseRedirect('/areas/'+areaID+'.html')
-	else:
-		areaForm = AddAreaForm()
-	return render(request, 'formPage.html', 
-		{'form': areaForm, 'content' : 'Edit Area',
-		 'value': 'Update'},
-		context_instance=RequestContext(request))
+	def get_context_data(self, **kwargs):
+		context = super(EditArea, self).get_context_data(**kwargs)
+		context['content'] = 'Edit area'
+		context['value'] = 'Update' 
+		return context
 
-@login_required(login_url='/login/')
-def editCreature(request, creatureID):
-	"""
-	  NEW
-	"""
-	editCreature = Creature.objects.get(id=creatureID)
-	if request.method == 'POST':
-		creatureForm = AddCreatureForm(request.POST, instance=editCreature)
-		if creatureForm.is_valid():
-			updatedCreature = creatureForm.save(commit=False)
-			updatedCreature.userID = editCreature.user
-			updatedCreature.date = editCreature.date
-			updatedCreature.save()
-			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
-	else:
-		creatureForm = AddCreatureForm()
-	return render(request, 'formPage.html', 
-		{'form': creatureForm, 'content' : 'Edit creature',
-		 'value': 'Update'},
-		context_instance=RequestContext(request))
+class EditCreature(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
+	model = Creature
+	form_class = AddCreatureForm
+	template_name = 'formPage.html'
+
+	def get_context_data(self, **kwargs):
+		context = super(EditCreature, self).get_context_data(**kwargs)
+		context['content'] = 'Edit creature'
+		context['value'] = 'Update' 
+		return context
 
 @login_required(login_url='/login/')
 def addDropForItem(request, itemID):

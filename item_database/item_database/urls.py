@@ -1,5 +1,8 @@
 from django.conf.urls import patterns, include, url
 from iitem_database.views import *
+from django.contrib.auth.decorators import login_required
+from django.views.generic import DetailView, ListView, UpdateView, DeleteView
+from rest_framework.urlpatterns import format_suffix_patterns
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -19,17 +22,17 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', mainpage, name='home'),
     url(r'^user/(?P<username>\w+)\.(?P<format>\w+)$', userpage),
-    url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^register/$', register),
-    url(r'^logout/$', logoutUser),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^accounts/register/$', register),
     
     url(r'^user/(?P<username>\w+)/additem/$', addUserItem),
     url(r'^user/(?P<username>\w+)/deleteitem/(?P<item>\w+)$', deleteUserItem),
     url(r'^user/(?P<username>\w+)/item/(?P<item>\w+)/quantity/(?P<quantity>-?\d+)$', quantityUserItem),
 
-    url(r'^additems/$', addItem),
-    url(r'^addareas/$', addArea),
-    url(r'^addcreatures/$', addCreature),
+    url(r'^items/add/$', ItemCreate.as_view(), name='add-item'),
+    url(r'^areas/add/$', AreaCreate.as_view(), name='add-area'),
+    url(r'^creatures/add/$', CreatureCreate.as_view(), name='add-creature'),
 
     url(r'^adddrop/item/(?P<itemID>\w+)/$', addDropForItem),
     url(r'^adddrop/creature/(?P<creatureID>\w+)/$', addDropForCreature),
@@ -43,13 +46,13 @@ urlpatterns = patterns('',
     url(r'^addencountered/area/(?P<areaID>\w+)/$', addEncounteredForArea),
     url(r'^deleteencountered/(?P<encounteredID>\w+)/$', deleteEncountered),
 
-    url(r'^deleteitems/(?P<itemID>\w+)$', deleteItem),
-    url(r'^deleteareas/(?P<areaID>\w+)$', deleteArea),
-    url(r'^deletecreatures/(?P<creatureID>\w+)$', deleteCreature),
+    url(r'^items/delete/(?P<itemID>\w+)$', deleteItem),
+    url(r'^areas/delete/(?P<areaID>\w+)$', deleteArea),
+    url(r'^creatures/delete/(?P<creatureID>\w+)$', deleteCreature),
 
-    url(r'^edititems/(?P<itemID>\w+)$', editItem),
-    url(r'^editareas/(?P<areaID>\w+)$', editArea),
-    url(r'^editcreatures/(?P<creatureID>\w+)$', editCreature),
+    url(r'^items/edit/(?P<pk>\w+)$', EditItem.as_view(), name='edit-item'),
+    url(r'^areas/edit/(?P<pk>\w+)$', EditArea.as_view(), name='edit-area'),
+    url(r'^creatures/edit/(?P<pk>\w+)$', EditCreature.as_view(), name='edit-creture'),
 
     url(r'^itemclasses\.(?P<format>\w+)$', itemClassListPage),
     url(r'^itemclasses/(?P<itemClassID>\w+)\.(?P<format>\w+)$', itemClassPage),

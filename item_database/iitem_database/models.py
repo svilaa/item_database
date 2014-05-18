@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
+from django.core.urlresolvers import reverse
 
 def get_default_user():
     return User.objects.get(pk=1)
@@ -35,6 +36,9 @@ class Item(models.Model):
 	def __unicode__(self):
 		return self.name
 
+	def get_absolute_url(self):
+		return '/items/%i.html' % self.id
+
 class Area(models.Model):
 	"""
 	  An area is the place where items and enemies where found
@@ -47,6 +51,9 @@ class Area(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+	def get_absolute_url(self):
+		return '/areas/%i.html' % self.id
 
 class Creature(models.Model):
 	"""
@@ -66,6 +73,9 @@ class Creature(models.Model):
 	
 	def __unicode__(self):
 		return self.name
+
+	def get_absolute_url(self):
+		return '/creatures/%i.html' % self.id
 
 class Encountered(models.Model):
 	creature = models.ForeignKey(Creature, related_name='c1')
