@@ -20,13 +20,13 @@
 
 
 			<p>Drops: {% if user.username %}
-		(<a href="/adddrop/creature/{{creature.id}}/">add</a>) {% endif %}</p>
+		(<a href="/drop/add/creature/{{creature.id}}/">add</a>) {% endif %}</p>
 			{% if drops %}
 			<ul>
 			{% for drop in drops %}
 				<li>
 					<a href="/items/{{drop.itemID.id}}.html">{{drop.itemID.name}}</a> - {{drop.dropRate}}% {% if user %}
-		(<a href="/deletedrop/{{drop.id}}/">delete</a>) {% endif %}
+		(<a href="/drop/delete/{{drop.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}
 			</ul>
@@ -36,13 +36,13 @@
 
 
 			<p>Can be found in: {% if user.username %}
-		(<a href="/addencountered/creature/{{creature.id}}/">add</a>) {% endif %}</p>
+		(<a href="/encountered/add/creature/{{creature.id}}/">add</a>) {% endif %}</p>
 			{% if encountereds %}
 			<ul>
 			{% for encountered in encountereds %}
 				<li>
 					<a href="/areas/{{encountered.area.id}}.html">{{encountered.area.name}}</a> {% if user.username %}
-		(<a href="/deleteencountered/{{encountered.id}}/">delete</a>) {% endif %}
+		(<a href="/encountered/delete/{{encountered.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}
 			</ul>

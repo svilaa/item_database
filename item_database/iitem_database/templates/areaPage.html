@@ -11,13 +11,13 @@
 			
 
 			<p>Items in this area: {% if user.username %}
-		(<a href="/addfound/area/{{area.id}}/">add</a>) {% endif %}</p>
+		(<a href="/found/add/area/{{area.id}}/">add</a>) {% endif %}</p>
 			{% if founds %}
 			<ul>
 			{% for found in founds %}
 				<li>
 					<a href="/items/{{found.itemID.id}}.html">{{found.itemID.name}}</a> {% if user == area.user %}
-		(<a href="/deletefound/{{found.id}}/">delete</a>) {% endif %}
+		(<a href="/found/delete/{{found.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}
 			</ul>
@@ -26,13 +26,13 @@
 			{% endif %}
 
 			<p>Creatures in this area:{% if user.username %}
-		(<a href="/addencountered/area/{{area.id}}/">add</a>) {% endif %}</p>
+		(<a href="/encountered/add/area/{{area.id}}/">add</a>) {% endif %}</p>
 			{% if encountereds %}
 			<ul>
 			{% for encountered in encountereds %}
 				<li>
 					<a href="/creatures/{{encountered.creature.id}}.html">{{encountered.creature.name}}</a> {% if user.username %}
-		(<a href="/deleteencountered/{{encountered.id}}/">delete</a>) {% endif %}
+		(<a href="/encountered/delete/{{encountered.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}
 			</ul>

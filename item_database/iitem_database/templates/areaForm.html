@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+		<h1> {{content}} </h1>
+    <script>
+        $(function() {
+            $("#id_name").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        "url": "http://www.kimonolabs.com/api/3d6d730u?apikey=0f6aae2bc8a7dfdc74b16906c300e947",
+                        "crossDomain": true,
+                        "dataType": "jsonp"
+                    })
+                    .done(function(data) {
+                        var areaList = []
+                        $.each(data.results.arealist, function(index, element) {
+                            var areaString = element.area.text;
+                            if(same_sequence_begin(request.term, areaString)) {
+                                areaList.push(element.area.text);
+                            }
+                        })
+                        response(areaList);
+                    });
+                }
+            });
+        });
+        //Checks if the user input and a given area string match from the beginning
+        function same_sequence_begin(input, sequence) {
+            for (var i = 0; i < input.length; i++) {
+                if(input.charAt(i) != sequence.charAt(i)) {
+                    return false;
+                }
+            }
+            return true;
+        };      
+    </script>
+		<form method="post" action="">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<p><input type='submit' value={{value}} /></p>
+{% endblock %}
+
+{% block footer %}
+		<p>Web in development</p>
+{% endblock %}

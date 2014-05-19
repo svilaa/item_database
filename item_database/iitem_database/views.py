@@ -86,15 +86,26 @@ def mainpage(request):
 	output = template.render(variables)
 	return HttpResponse(output)
 
+def check_object_user_owner(request, obj):
+	if not obj.user == request.user:
+		raise PermissionDenied
+
+def get_user(request, username):
+	try:
+		user = User.objects.get(username=username)
+		if not user == request.user:
+			raise PermissionDenied
+	except:
+		raise Http404('User not found.')
+	return user
+
 @login_required(login_url='/login/')
 def userpage(request, username, format=html):
 	"""
 	  Shows the items that this user has
 	"""
-	try:
-		user = User.objects.get(username=username)
-	except:
-		raise Http404('User not found.')
+	
+	user = get_user(request, username)
 
 	userItems = UserItems.objects.filter(userID=user.id)
 
@@ -138,10 +149,8 @@ def addUserItem(request, username):
 	  Request the user to select a item and a quantity.
 	  This data will be show in his item list.
 	"""
-	try:
-		user = User.objects.get(username=username)
-	except:
-		raise Http404('User not found.')
+
+	user = get_user(request, username)
 
 	if request.method == 'POST':
 		itemForm = AddUserItemForm(request.POST)
@@ -162,19 +171,13 @@ def addUserItem(request, username):
 
 @login_required(login_url='/login/')
 def deleteUserItem(request, username, item):
-	try:
-		user = User.objects.get(username=username)
-	except:
-		raise Http404('User not found.')
+	user = get_user(request, username)
 	item = UserItems.objects.get(userID=user.id, itemID=item).delete()
 	return HttpResponseRedirect('/user/'+username+'.html')
 
 @login_required(login_url='/login/')
 def quantityUserItem(request, username, item, quantity):
-	try:
-		user = User.objects.get(username=username)
-	except:
-		raise Http404('User not found.')
+	user = get_user(request, username)
 	item = UserItems.objects.get(userID=user.id, itemID=item)
 	item.quantity+=int(quantity)
 	if item.quantity >= 0:
@@ -198,7 +201,7 @@ class ItemCreate(LoginRequiredMixin, CreateView):
 
 class AreaCreate(LoginRequiredMixin, CreateView):
 	model = Area
-	template_name = 'formPage.html'
+	template_name = 'areaForm.html'
 	form_class = AddAreaForm
 
 	def get_context_data(self, **kwargs):
@@ -212,8 +215,8 @@ class AreaCreate(LoginRequiredMixin, CreateView):
 		return super(AreaCreate, self).form_valid(form)
 
 class CreatureCreate(LoginRequiredMixin, CreateView):
-	model = Item
-	template_name = 'formPage.html'
+	model = Creature
+	template_name = 'creatureForm.html'
 	form_class = AddCreatureForm
 
 	def get_context_data(self, **kwargs):
@@ -228,17 +231,23 @@ class CreatureCreate(LoginRequiredMixin, CreateView):
 
 @login_required(login_url='/login/')
 def deleteItem(request, itemID):
-	item = Item.objects.get(id=itemID).delete()
+	item = Item.objects.get(id=itemID)
+	check_object_user_owner(request, item)
+	item.delete()
 	return HttpResponseRedirect('/items.html')
 
 @login_required(login_url='/login/')
 def deleteArea(request, areaID):
-	area = Area.objects.get(id=areaID).delete()
+	area = Area.objects.get(id=areaID)
+	check_object_user_owner(request, area)
+	area.delete()
 	return HttpResponseRedirect('/areas.html')
 
 @login_required(login_url='/login/')
 def deleteCreature(request, creatureID):
-	creature = Creature.objects.get(id=creatureID).delete()
+	creature = Creature.objects.get(id=creatureID)
+	check_object_user_owner(request, creature)
+	creature.delete()
 	return HttpResponseRedirect('/creatures.html')
 
 class EditItem(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
@@ -255,7 +264,7 @@ class EditItem(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
 class EditArea(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
 	model = Area
 	form_class = AddAreaForm
-	template_name = 'formPage.html'
+	template_name = 'areaForm.html'
 
 	def get_context_data(self, **kwargs):
 		context = super(EditArea, self).get_context_data(**kwargs)
@@ -266,7 +275,7 @@ class EditArea(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
 class EditCreature(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
 	model = Creature
 	form_class = AddCreatureForm
-	template_name = 'formPage.html'
+	template_name = 'creatureForm.html'
 
 	def get_context_data(self, **kwargs):
 		context = super(EditCreature, self).get_context_data(**kwargs)
@@ -380,7 +389,7 @@ def addEncounteredForCreature(request, creatureID):
 		if encounteredForm.is_valid():
 			encountered = encounteredForm.save(commit=False)
 			encountered.creature = creature
-			if not Encountered.objects.filter(creatureID=creatureID).filter(area=encountered.area).exists():
+			if not Encountered.objects.filter(creature=creatureID).filter(area=encountered.area).exists():
 				encountered.save()
 			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
 	else:
@@ -401,7 +410,7 @@ def addEncounteredForArea(request, areaID):
 		if encounteredForm.is_valid():
 			encountered = encounteredForm.save(commit=False)
 			encountered.area = area
-			if not Encountered.objects.filter(areaID=areaID).filter(creature=encountered.creature).exists():
+			if not Encountered.objects.filter(area=areaID).filter(creature=encountered.creature).exists():
 				encountered.save()
 			return HttpResponseRedirect('/areas/'+areaID+'.html')
 	else:
@@ -665,8 +674,6 @@ def areaPage(request, areaID, format=html):
 	founds = Found.objects.filter(areaID=area.id)
 	creatures = Creature.objects.filter(areas=area.id)
 	encountereds = Encountered.objects.filter(area=area.id)
-	
-	print request.user
 
 	if format == html:
 		template = get_template('areaPage.html')
@@ -710,7 +717,7 @@ def areaPage(request, areaID, format=html):
 	else:
 		return HttpResponseNotFound(format_error)
 
-#RESTFULL API Views
+#RESTFUL API Views
 
 #API Root View
 @api_view(('GET',))

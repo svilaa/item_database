@@ -10,13 +10,13 @@
 			<p>Class: <a href="/itemclasses/{{item.typeID.id}}.html">{{item.typeID.name}}</a></p>
 
 			<p>The item can be found in: {% if user.username %}
-		(<a href="/addfound/item/{{item.id}}/">add</a>) {% endif %}</p>
+		(<a href="/found/add/item/{{item.id}}/">add</a>) {% endif %}</p>
 			{% if founds %}
 			<ul>
 			{% for found in founds %}
 				<li>
 					<a href="/areas/{{area.id}}.html">{{found.areaID.name}}</a> {% if user == item.user %}
-		(<a href="/deletefound/{{found.id}}/">delete</a>) {% endif %}
+		(<a href="/found/delete/{{found.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}
 			</ul>
@@ -25,13 +25,13 @@
 			{% endif %}
 
 			<p>The item is dropped by: {% if user.username %}
-		(<a href="/adddrop/item/{{item.id}}/">add</a>) {% endif %} </p>
+		(<a href="/drop/add/item/{{item.id}}/">add</a>) {% endif %} </p>
 			{% if drops %}
 			<ul>
 			{% for drop in drops %}
 				<li>
 					<a href="/creatures/{{drop.creatureID.id}}.html">{{drop.creatureID.name}}</a> - {{drop.dropRate}}% {% if user.username %}
-		(<a href="/deletedrop/{{drop.id}}/">delete</a>) {% endif %}
+		(<a href="/drop/delete/{{drop.id}}/">delete</a>) {% endif %}
 				</li>
 			{% endfor %}
 			</ul>

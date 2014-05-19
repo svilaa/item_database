@@ -4,17 +4,17 @@
 
 		<p><a href="/">Return to mainpage</a>
 		<br/><br/>
-		<a href="/logout/">Log out</a>
+		<a href="/accounts/logout/?next=/">Log out</a>
 		</p>
 		<h1> {{titlehead}} </h1>
 			<p>Name: {{user.username}}</p>
 
-			<p>Your items (<a href="/user/{{user.username}}/additem/">add</a>)</p>
+			<p>Your items (<a href="/user/{{user.username}}/item/add/">add</a>)</p>
 			{% if userItems %}
 				<ul>
 				{% for userItem in userItems %}
 					<li>
-						<a href="/items/{{userItem.itemID.id}}.html">{{userItem.itemID.name}}</a> = {{userItem.quantity}} ( <a href="/user/{{user.username}}/item/{{userItem.itemID.id}}/quantity/-1">-1</a> <a href="/user/{{user.username}}/item/{{userItem.itemID.id}}/quantity/1">+1</a> <a href="/user/{{user.username}}/deleteitem/{{userItem.itemID.id}}">delete</a>)
+						<a href="/items/{{userItem.itemID.id}}.html">{{userItem.itemID.name}}</a> = {{userItem.quantity}} ( <a href="/user/{{user.username}}/item/{{userItem.itemID.id}}/quantity/-1">-1</a> <a href="/user/{{user.username}}/item/{{userItem.itemID.id}}/quantity/1">+1</a> <a href="/user/{{user.username}}/item/delete/{{userItem.itemID.id}}">delete</a>)
 					</li>
 				{% endfor %}
 				</ul>
@@ -24,9 +24,9 @@
 
 			<p>Add content:</p>
 			<ul>
-				<li><a href="/additems/">Add new item</a></li>
-				<li><a href="/addareas/">Add new area</a></li>
-				<li><a href="/addcreatures/">Add new creature</a></li>
+				<li><a href="/items/add/">Add new item</a></li>
+				<li><a href="/areas/add/">Add new area</a></li>
+				<li><a href="/creatures/add/">Add new creature</a></li>
 			</ul>
 
 {% endblock %}

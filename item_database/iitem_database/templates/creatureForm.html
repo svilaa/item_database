@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+		<script>
+	        $(function() {
+	            $.getJSON("{% static "creatures.json" %}", {}, function (creatures) {
+	                $("#id_name").autocomplete({
+	                    source: creatures
+	                });
+	            });
+	        });
+        </script>
+		<h1> {{content}} </h1>
+		<form method="post" action="">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<p><input type='submit' value={{value}} /></p>
+{% endblock %}
+
+{% block footer %}
+		<p>Web in development</p>
+{% endblock %}
