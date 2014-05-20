@@ -16,6 +16,7 @@ class ItemClassSerializer(serializers.HyperlinkedModelSerializer):
 
 class AreaSerializer(serializers.HyperlinkedModelSerializer):
 	date = serializers.DateTimeField(read_only=True)
+	user = serializers.CharField(read_only=True)
 	class Meta:
 		model = Area
 		fields = ('url', 'id', 'name', 'desc', 'user', \
@@ -23,6 +24,7 @@ class AreaSerializer(serializers.HyperlinkedModelSerializer):
 
 class CreatureSerializer(serializers.HyperlinkedModelSerializer):
 	date = serializers.DateTimeField(read_only=True)
+	user = serializers.CharField(read_only=True)
 	class Meta:
 		model = Creature
 		fields = ('url', 'id', 'name', 'desc', 'dangerLevel', \
@@ -30,6 +32,7 @@ class CreatureSerializer(serializers.HyperlinkedModelSerializer):
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
 	date = serializers.DateTimeField(read_only=True)
+	user = serializers.CharField(read_only=True)
 	class Meta:
 		model = Item
 		fields = ('url', 'id', 'name', 'desc', 'typeID', \
@@ -41,6 +44,7 @@ class FoundSerializer(serializers.HyperlinkedModelSerializer):
 		fields = ('url', 'id', 'itemID', 'areaID')
 
 class UserItemsSerializer(serializers.HyperlinkedModelSerializer):
+	userID = serializers.CharField(read_only=True)
 	class Meta:
 		model = UserItems
 		fields = ('url', 'id', 'userID', 'itemID', 'quantity')

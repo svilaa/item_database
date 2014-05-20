@@ -737,29 +737,25 @@ def api_index(request, format=None):
 api_permissions_owner = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
 api_permissions_authoro = (permissions.IsAuthenticatedOrReadOnly,)
 
-class APIUserList(generics.ListCreateAPIView):
+class APIUserList(generics.ListAPIView):
 	permission_classes = api_permissions_authoro
 	model = User
 	serializer_class = UserSerializer
 
-class APIUserDetail(generics.RetrieveUpdateDestroyAPIView):
-	permission_classes = api_permissions_owner
+class APIUserDetail(generics.RetrieveAPIView):
+	permission_classes = api_permissions_authoro
 	model = User
 	serializer_class = UserSerializer
 
-class APIItemClassList(generics.ListCreateAPIView):
+class APIItemClassList(generics.ListAPIView):
 	permission_classes = api_permissions_authoro
 	model = ItemClass
 	serializer_class = ItemClassSerializer
-	def pre_save(self, obj):
-		obj.date = date.today()
 
-class APIItemClassDetail(generics.RetrieveUpdateDestroyAPIView):
-	permission_classes = api_permissions_owner
+class APIItemClassDetail(generics.RetrieveAPIView):
+	permission_classes = api_permissions_authoro
 	model = ItemClass
 	serializer_class = ItemClassSerializer
-	def pre_save(self, obj):
-		obj.date = date.today()
 
 class APIAreaList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
@@ -767,6 +763,7 @@ class APIAreaList(generics.ListCreateAPIView):
 	serializer_class = AreaSerializer
 	def pre_save(self, obj):
 		obj.date = date.today()
+		obj.user = self.request.user
 
 class APIAreaDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
@@ -781,6 +778,7 @@ class APICreatureList(generics.ListCreateAPIView):
 	serializer_class = CreatureSerializer
 	def pre_save(self, obj):
 		obj.date = date.today()
+		obj.user = self.request.user
 
 class APICreatureDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
@@ -795,6 +793,7 @@ class APIItemList(generics.ListCreateAPIView):
 	serializer_class = ItemSerializer
 	def pre_save(self, obj):
 		obj.date = date.today()
+		obj.user = self.request.user
 
 class APIItemDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
@@ -817,6 +816,8 @@ class APIUserItemsList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
 	model = UserItems
 	serializer_class = UserItemsSerializer
+	def pre_save(self, obj):
+		obj.userID = self.request.user
 
 class APIUserItemsDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
