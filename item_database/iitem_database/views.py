@@ -388,8 +388,8 @@ def addEncounteredForCreature(request, creatureID):
 		encounteredForm = AddEncounteredForCreatureForm(request.POST)
 		if encounteredForm.is_valid():
 			encountered = encounteredForm.save(commit=False)
-			encountered.creature = creature
-			if not Encountered.objects.filter(creature=creatureID).filter(area=encountered.area).exists():
+			encountered.creatureID = creature
+			if not Encountered.objects.filter(creatureID=creatureID).filter(areaID=encountered.areaID).exists():
 				encountered.save()
 			return HttpResponseRedirect('/creatures/'+creatureID+'.html')
 	else:
@@ -409,8 +409,8 @@ def addEncounteredForArea(request, areaID):
 		encounteredForm = AddEncounteredForAreaForm(request.POST)
 		if encounteredForm.is_valid():
 			encountered = encounteredForm.save(commit=False)
-			encountered.area = area
-			if not Encountered.objects.filter(area=areaID).filter(creature=encountered.creature).exists():
+			encountered.areaID = area
+			if not Encountered.objects.filter(areaID=areaID).filter(creatureID=encountered.creatureID).exists():
 				encountered.save()
 			return HttpResponseRedirect('/areas/'+areaID+'.html')
 	else:
@@ -608,7 +608,7 @@ def creaturePage(request, creatureID, format=html):
 
 	drops = Drops.objects.filter(creatureID=creatureID)
 	areas = creature.areas.all()
-	encountereds = Encountered.objects.filter(creature=creatureID)
+	encountereds = Encountered.objects.filter(creatureID=creatureID)
 
 	if format == html:
 		template = get_template('creaturePage.html')
@@ -673,7 +673,7 @@ def areaPage(request, areaID, format=html):
 	items = Item.objects.filter(found__areaID=area.id)
 	founds = Found.objects.filter(areaID=area.id)
 	creatures = Creature.objects.filter(areas=area.id)
-	encountereds = Encountered.objects.filter(area=area.id)
+	encountereds = Encountered.objects.filter(areaID=area.id)
 
 	if format == html:
 		template = get_template('areaPage.html')

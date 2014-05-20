@@ -53,4 +53,4 @@ class DropsSerializer(serializers.HyperlinkedModelSerializer):
 class EncounteredSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Encountered
-		field = ('url', 'id', 'creature', 'area')
+		field = ('url', 'id', 'creatureID', 'areaID')

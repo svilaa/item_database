@@ -78,9 +78,14 @@ class Creature(models.Model):
 		return '/creatures/%i.html' % self.id
 
 class Encountered(models.Model):
-	creature = models.ForeignKey(Creature, related_name='c1')
-	area = models.ForeignKey(Area, related_name='area1')
+	"""
+	  Associates an area and a creature
+	"""
+	creatureID = models.ForeignKey(Creature)
+	areaID = models.ForeignKey(Area)
 
+	def __unicode__(self):
+		return self.creatureID.name + " - " + self.areaID.name
 
 class Drops(models.Model):
 	"""

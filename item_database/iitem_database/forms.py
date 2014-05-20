@@ -79,15 +79,17 @@ class AddFoundForAreaForm(ModelForm):
 class AddEncounteredForCreatureForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(AddEncounteredForCreatureForm, self).__init__(*args, **kwargs)
+		self.fields['areaID'].label = "Area"
 
 	class Meta:
 		model = Encountered
-		fields = ('area',)
+		fields = ('areaID',)
 
 class AddEncounteredForAreaForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(AddEncounteredForAreaForm, self).__init__(*args, **kwargs)
+		self.fields['creatureID'].label = "Creature"
 
 	class Meta:
 		model = Encountered
-		fields = ('creature',)
+		fields = ('creatureID',)
