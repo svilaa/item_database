@@ -87,10 +87,17 @@ def mainpage(request):
 	return HttpResponse(output)
 
 def check_object_user_owner(request, obj):
+	"""
+	  Proves that the current user is the creator of obj
+	"""
 	if not obj.user == request.user:
 		raise PermissionDenied
 
 def get_user(request, username):
+	"""
+	  Return the current user if really is it, else, throws an exception
+	  and the page won't be served
+	"""
 	try:
 		user = User.objects.get(username=username)
 		if not user == request.user:
@@ -171,12 +178,18 @@ def addUserItem(request, username):
 
 @login_required(login_url='/login/')
 def deleteUserItem(request, username, item):
+	"""
+	  Deletes the selected item of a user
+	"""
 	user = get_user(request, username)
 	item = UserItems.objects.get(userID=user.id, itemID=item).delete()
 	return HttpResponseRedirect('/user/'+username+'.html')
 
 @login_required(login_url='/login/')
 def quantityUserItem(request, username, item, quantity):
+	"""
+	  Modifies the number of a concrete item by the increment/decrement quantity
+	"""
 	user = get_user(request, username)
 	item = UserItems.objects.get(userID=user.id, itemID=item)
 	item.quantity+=int(quantity)
@@ -286,7 +299,7 @@ class EditCreature(LoginRequiredMixin, CheckIsOwnerMixin, UpdateView):
 @login_required(login_url='/login/')
 def addDropForItem(request, itemID):
 	"""
-	  NEW
+	  Permits the addition of a drop using the item page
 	"""
 	item = Item.objects.get(id=itemID)
 	if request.method == 'POST':
@@ -307,7 +320,7 @@ def addDropForItem(request, itemID):
 @login_required(login_url='/login/')
 def addDropForCreature(request, creatureID):
 	"""
-	  NEW
+	  Permits the addition of a drop using the creature page
 	"""
 	creature = Creature.objects.get(id=creatureID)
 	if request.method == 'POST':
@@ -333,7 +346,7 @@ def deleteDrop(request, dropID):
 @login_required(login_url='/login/')
 def addFoundForItem(request, itemID):
 	"""
-	  NEW
+	  Permits the addition of a found using the item page
 	"""
 	item = Item.objects.get(id=itemID)
 	if request.method == 'POST':
@@ -354,7 +367,7 @@ def addFoundForItem(request, itemID):
 @login_required(login_url='/login/')
 def addFoundForArea(request, areaID):
 	"""
-	  NEW
+	  Permits the addition of a found using the area page
 	"""
 	area = Area.objects.get(id=areaID)
 	if request.method == 'POST':
@@ -381,7 +394,7 @@ def deleteFound(request, foundID):
 @login_required(login_url='/login/')
 def addEncounteredForCreature(request, creatureID):
 	"""
-	  NEW
+	  Permits the addition of an encountered using the creature page
 	"""
 	creature = Creature.objects.get(id=creatureID)
 	if request.method == 'POST':
@@ -402,7 +415,7 @@ def addEncounteredForCreature(request, creatureID):
 @login_required(login_url='/login/')
 def addEncounteredForArea(request, areaID):
 	"""
-	  NEW
+	  Permits the addition of an encountered using the area page
 	"""
 	area = Area.objects.get(id=areaID)
 	if request.method == 'POST':
