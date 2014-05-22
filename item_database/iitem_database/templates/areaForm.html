@@ -26,8 +26,10 @@
         });
         //Checks if the user input and a given area string match from the beginning
         function same_sequence_begin(input, sequence) {
-            for (var i = 0; i < input.length; i++) {
-                if(input.charAt(i) != sequence.charAt(i)) {
+            var l_input = input.toLowerCase();
+            var l_sequence = sequence.toLowerCase();
+            for (var i = 0; i < l_input.length; i++) {
+                if(l_input.charAt(i) != l_sequence.charAt(i)) {
                     return false;
                 }
             }

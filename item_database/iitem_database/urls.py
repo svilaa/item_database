@@ -17,6 +17,9 @@ urlpatterns = patterns('',
 	url(r'users/$', APIUserList.as_view(), name='user-list'),
 	url(r'users/(?P<pk>\d+)/$', APIUserDetail.as_view(), name='user-detail'),
 
+	url(r'useritems/$', APIUserItemsList.as_view(), name='useritems-list'),
+	url(r'useritems/(?P<pk>\d+)/$', APIUserItemsDetail.as_view(), name='useritems-detail'),
+
 	url(r'items/$', APIItemList.as_view(), name='item-list'),
 	url(r'items/(?P<pk>\d+)/$', APIItemDetail.as_view(), name='item-detail'),
 
@@ -32,14 +35,11 @@ urlpatterns = patterns('',
 	url(r'founds/$', APIFoundList.as_view(), name='found-list'),
 	url(r'founds/(?P<pk>\d+)/$', APIFoundDetail.as_view(), name='found-detail'),
 
-	url(r'useritems/$', APIUserItemsList.as_view(), name='useritems-list'),
-	url(r'useritems/(?P<pk>\d+)/$', APIUserItemsDetail.as_view(), name='useritems-detail'),
-
 	url(r'drops/$', APIDropsList.as_view(), name='drops-list'),
 	url(r'drops/(?P<pk>\d+)/$', APIDropsDetail.as_view(), name='drops-detail'),
 
-	url(r'encountered/$', APIEncounteredList.as_view(), name='encountered-list'),
-	url(r'encountered/(?P<pk>\d+)/$', APIEncounteredDetail.as_view(), name='encountered-detail'),
+	url(r'encountereds/$', APIEncounteredList.as_view(), name='encountered-list'),
+	url(r'encountereds/(?P<pk>\d+)/$', APIEncounteredDetail.as_view(), name='encountered-detail'),
 
 	url(r'^login/', include('rest_framework.urls',
     	namespace='rest_framework')),

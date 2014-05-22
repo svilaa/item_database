@@ -833,7 +833,7 @@ class APIUserItemsList(generics.ListCreateAPIView):
 		obj.userID = self.request.user
 
 class APIUserItemsDetail(generics.RetrieveUpdateDestroyAPIView):
-	permission_classes = api_permissions_owner
+	permission_classes = api_permissions_authoro
 	model = UserItems
 	serializer_class = UserItemsSerializer
 
