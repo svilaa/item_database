@@ -738,11 +738,11 @@ def api_index(request, format=None):
 	return Response({
 		'users': reverse('user-list', request=request, format=format),
 		'items': reverse('item-list', request=request, format=format),
-		'item classes': reverse('itemclass-list', request=request, format=format),
+		'item_classes': reverse('itemclass-list', request=request, format=format),
 		'areas': reverse('area-list', request=request, format=format),
 		'creatures': reverse('creature-list', request=request, format=format),
 		'founds': reverse('found-list', request=request, format=format),
-		'users items': reverse('useritems-list', request=request, format=format),
+		'users_items': reverse('useritems-list', request=request, format=format),
 		'drops': reverse('drops-list', request=request, format=format),
 		'encoutereds' : reverse('encountered-list', request=request, format=format),
 	})
