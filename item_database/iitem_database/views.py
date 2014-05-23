@@ -782,6 +782,8 @@ class APIAreaDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = Area
 	serializer_class = AreaSerializer
+	def pre_save(self, obj):
+		obj.user = self.request.user
 
 class APICreatureList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
@@ -795,6 +797,8 @@ class APICreatureDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = Creature
 	serializer_class = CreatureSerializer
+	def pre_save(self, obj):
+		obj.user = self.request.user
 
 class APIItemList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
@@ -808,6 +812,8 @@ class APIItemDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = Item
 	serializer_class = ItemSerializer
+	def pre_save(self, obj):
+		obj.user = self.request.user
 
 class APIFoundList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
@@ -830,6 +836,8 @@ class APIUserItemsDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_authoro
 	model = UserItems
 	serializer_class = UserItemsSerializer
+	def pre_save(self, obj):
+		obj.userID = self.request.user
 
 class APIDropsList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
