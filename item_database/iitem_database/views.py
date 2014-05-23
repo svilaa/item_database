@@ -744,7 +744,7 @@ def api_index(request, format=None):
 		'founds': reverse('found-list', request=request, format=format),
 		'users_items': reverse('useritems-list', request=request, format=format),
 		'drops': reverse('drops-list', request=request, format=format),
-		'encoutereds' : reverse('encountered-list', request=request, format=format),
+		'encountereds' : reverse('encountered-list', request=request, format=format),
 	})
 
 api_permissions_owner = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
