@@ -782,8 +782,6 @@ class APIAreaDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = Area
 	serializer_class = AreaSerializer
-	def pre_save(self, obj):
-		obj.date = date.today()
 
 class APICreatureList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
@@ -797,8 +795,6 @@ class APICreatureDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = Creature
 	serializer_class = CreatureSerializer
-	def pre_save(self, obj):
-		obj.date = date.today()
 
 class APIItemList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
@@ -812,8 +808,6 @@ class APIItemDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_owner
 	model = Item
 	serializer_class = ItemSerializer
-	def pre_save(self, obj):
-		obj.date = date.today()
 
 class APIFoundList(generics.ListCreateAPIView):
 	permission_classes = api_permissions_authoro
