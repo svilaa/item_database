@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from iitem_database.models import ItemClass, Area, Creature, \
-									Item, Found, UserItems, Drops, Encountered
+									Item, Found, UserItems, Drops, Encountered, ItemReview
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
@@ -36,7 +36,7 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Item
 		fields = ('url', 'id', 'name', 'desc', 'typeID', \
-			'user', 'date', 'areas', 'creatures')
+			'user', 'date', 'areas', 'creatures', 'itemreview_set')
 
 class FoundSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
@@ -58,3 +58,11 @@ class EncounteredSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Encountered
 		field = ('url', 'id', 'creatureID', 'areaID')
+
+class ItemReviewSerializer(serializers.HyperlinkedModelSerializer):
+	date = serializers.DateTimeField(read_only=True)
+	user = serializers.CharField(read_only=True)
+	class Meta:
+		model = ItemReview
+		field = ('url', 'id', 'rating', 'comment', \
+			'item', 'user', 'date')

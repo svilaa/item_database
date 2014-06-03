@@ -1,12 +1,11 @@
 {% extends "base.html" %}
-
 {% block content %}
 		<a href="/items.html">Return to items</a>
 		<h1> {{titlehead}} {% if user == item.user %}
 		(<a href="/items/edit/{{item.id}}">edit</a>)
         (<a href="/items/delete/{{item.id}}">delete</a>) {% endif %} </h1>
-			<p>Name: {{item.name}}</p>
-			<p>Description: {{item.desc}}</p>
+			<p>Name: {{item.name}} </p>
+			<p>Description: {{item.desc}} </p>
 			<p>Class: <a href="/itemclasses/{{item.typeID.id}}.html">{{item.typeID.name}}</a></p>
 
 			<p>The item can be found in: {% if user.username %}
@@ -39,8 +38,80 @@
 				<p>Nobody</p>
 			{% endif %}
 
+		<!-- Semantic markings -->
+		<span vocab="http://schema.org/" typeof="ItemPage">
+			<span property="name" content="{{ item.name }}"></span>
+			<span property="description" content="{{ item.desc }}"></span>
+			<span property="creator" content="{{ item.user }}"></span>
+			<span property="dateCreated" content="{{ item.date }}"></span>
+			<span property="accessibilityAPI" content="{% url 'item-detail' item.id %}"></span>
+			{% for drop in drops %}
+			<span rel="provider">
+				<p typeof="Person">
+					<span property="name" content="{{ drop.creatureID.name }}"></span>
+					<span property="description" content="{{ drop.creatureID.desc }}"></span>
+					<span property="creator" content="{{ drop.creatureID.user }}"></span>
+				</p>
+			</span>
+			{% endfor %}
+
+			{% for fnd in founds %}
+			<span rel="contentLocation">
+				<p typeof="Place">
+					<span property="name" content="{{ fnd.areaID.name }}"></span>
+					<span property="description" content="{{ fnd.areaID.desc }}"></span>
+				</p>
+			</span>
+			{% endfor %}
+
+			<h2>Reviews</h2>
+			{% if item.itemreview_set.all|length > 0 %}
+			<span rel="aggregateRating">
+			    <p typeof="AggregateRating">
+			        Average rating <span property="ratingValue">{{ item.averageRating|stringformat:".1f" }}</span>
+			        {% with item.itemreview_set.all|length as reviewCount %}
+			        from <span property="reviewCount">{{ reviewCount }}</span> review{{ reviewCount|pluralize }}
+			        {% endwith %}
+			    </p>
+			</span>
+			<ul rel="review">
+			    {% for review in item.itemreview_set.all %}
+			        <li typeof="Review">
+			            <p rel="reviewRating" typeof="Rating">
+			                <span property="worstRating" content="{{ RATING_CHOICES.0.0 }}"></span>
+			                <span property="ratingValue">{{ review.rating }}</span> star{{ review.rating|pluralize }}
+			                {% with RATING_CHOICES|last as best %}
+			                <span property="bestRating" content="{{ best.0 }}"></span>
+			                {% endwith %}
+			            </p>
+			            <p property="description">{{ review.comment }}</p>
+			            <p>Created by <span property="author">{{ review.user }}</span> on
+			                <span property="publishDate">{{ review.date }}</span></p>
+			        </li>
+			    {% endfor %}
+			</ul>
+			</span>
+			{% endif %}
+		</span>
+
+
+			<h3>Add Review</h3>
+			<form method="post" action="{% url 'review_create' item.id %}">
+				{% csrf_token %}
+			    {{ form.as_p }}
+			    Message: <textarea name="comment" id="comment" rows="4"></textarea>
+			    <p>Rating:</p>
+			    <p>
+			    {% for rate in RATING_CHOICES %}
+			        <input type="radio" name="rating" id="rating{{ forloop.counter }}" value="{{ rate.1 }}" />
+			        <label for="choice{{ forloop.counter }}">{{ rate.1 }} star{{ rate.0|pluralize }}</label><br />
+			    {% endfor %}
+			    </p>
+			    <input type="submit" value="Review"></input>
+			</form>
+
 {% endblock %}
 
 {% block footer %}
-		<p>Item created by {{item.user}} on {{ item.date }}<p>
+		<p>Item created by {{item.user}} on {{ item.date }} <p>
 {% endblock %}

@@ -39,6 +39,13 @@ class Item(models.Model):
 	def get_absolute_url(self):
 		return '/items/%i.html' % self.id
 
+	def averageRating(self):
+		ratingSum = 0.0
+		for review in self.itemreview_set.all():
+			ratingSum += review.rating
+		reviewCount = self.itemreview_set.count()
+		return ratingSum / reviewCount
+
 class Area(models.Model):
 	"""
 	  An area is the place where items and enemies where found
@@ -117,3 +124,16 @@ class UserItems(models.Model):
 	quantity = models.PositiveIntegerField()
 	def __unicode__(self):
 		return self.userID.username + " - " + self.itemID.name + " - " + str(self.quantity)
+
+class Review(models.Model):
+	RATING_CHOICES = ((1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5'))
+	rating = models.PositiveSmallIntegerField('Ratings (stars)', blank=False, default=3, choices=RATING_CHOICES)
+	comment = models.TextField(blank=True, null=True)
+	user = models.ForeignKey(User, default=get_default_user)
+	date = models.DateField(default=date.today)
+
+	class Meta:
+		abstract = True
+
+class ItemReview(Review):
+	item = models.ForeignKey(Item)

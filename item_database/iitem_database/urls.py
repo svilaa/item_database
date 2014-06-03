@@ -9,6 +9,7 @@ from iitem_database.views import APIFoundList, APIFoundDetail
 from iitem_database.views import APIUserItemsList, APIUserItemsDetail
 from iitem_database.views import APIDropsList, APIDropsDetail
 from iitem_database.views import APIEncounteredList, APIEncounteredDetail
+from iitem_database.views import APIItemReviewList, APIItemReviewDetail
 
 urlpatterns = patterns('',
 	#REST API URLS
@@ -40,6 +41,9 @@ urlpatterns = patterns('',
 
 	url(r'encountereds/$', APIEncounteredList.as_view(), name='encountered-list'),
 	url(r'encountereds/(?P<pk>\d+)/$', APIEncounteredDetail.as_view(), name='encountered-detail'),
+
+	url(r'itemreviews/$', APIItemReviewList.as_view(), name='itemreview-list'),
+	url(r'itemreviews/(?P<pk>\d+)/$', APIItemReviewDetail.as_view(), name='itemreview-detail'),
 
 	url(r'^login/', include('rest_framework.urls',
     	namespace='rest_framework')),

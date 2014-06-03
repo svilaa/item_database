@@ -8,17 +8,17 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseNotFound, HttpResponseRedirect
 from django.template import Context, RequestContext
 from django.template.loader import get_template
-from iitem_database.models import ItemClass, Area, Creature, Item, Found, UserItems, Drops, Encountered
+from iitem_database.models import ItemClass, Area, Creature, Item, Found, UserItems, Drops, Encountered, ItemReview
 from django.contrib.auth.models import User
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, get_object_or_404
 
 from iitem_database.forms import AddUserItemForm, AddItemForm, AddAreaForm, \
 								 AddCreatureForm, AddDropForItemForm, AddDropForCreatureForm, \
 								 AddFoundForItemForm, AddFoundForAreaForm, AddEncounteredForCreatureForm, \
-								 AddEncounteredForAreaForm
+								 AddEncounteredForAreaForm, ReviewItemForm
 from django.contrib.auth import logout
 
 from rest_framework.decorators import api_view
@@ -28,7 +28,7 @@ from rest_framework import generics, permissions
 from iitem_database.permissions import IsOwnerOrReadOnly
 from iitem_database.serializers import ItemClassSerializer, AreaSerializer, CreatureSerializer, \
 										ItemSerializer, FoundSerializer, UserItemsSerializer, DropsSerializer, \
-										UserSerializer, EncounteredSerializer
+										UserSerializer, EncounteredSerializer, ItemReviewSerializer
 
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView
@@ -105,6 +105,17 @@ def get_user(request, username):
 	except:
 		raise Http404('User not found.')
 	return user
+
+@login_required()
+def review(request, pk):
+    item = Item.objects.get(id=pk)
+    new_review = ItemReview(
+        rating=request.POST['rating'],
+        comment=request.POST['comment'],
+        user=request.user,
+        item=item)
+    new_review.save()
+    return HttpResponseRedirect(item.get_absolute_url())
 
 @login_required(login_url='/login/')
 def userpage(request, username, format=html):
@@ -522,9 +533,12 @@ def itemPage(request, itemID, format=html):
 			'founds': founds,
 			'drops': drops,
 			'user': request.user,
+			'RATING_CHOICES': ItemReview.RATING_CHOICES,
 			})
-		output = template.render(variables)
-		return HttpResponse(output)
+		#output = template.render(variables, context_instance=RequestContext(request))
+		return render_to_response('itemPage.html', RequestContext(request, variables))
+		#return HttpResponse(output)
+
 	elif format == json:
 		json_response = {}
 		json_response['Item ID'] = item.id
@@ -745,6 +759,7 @@ def api_index(request, format=None):
 		'users_items': reverse('useritems-list', request=request, format=format),
 		'drops': reverse('drops-list', request=request, format=format),
 		'encountereds' : reverse('encountered-list', request=request, format=format),
+		'reviews' : reverse('itemreview-list', request=request, format=format),
 	})
 
 api_permissions_owner = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
@@ -858,3 +873,18 @@ class APIEncounteredDetail(generics.RetrieveUpdateDestroyAPIView):
 	permission_classes = api_permissions_authoro
 	model = Encountered
 	serializer_class = EncounteredSerializer
+
+class APIItemReviewList(generics.ListCreateAPIView):
+	permission_classes = api_permissions_authoro
+	model = ItemReview
+	serializer_class = ItemReviewSerializer
+	def pre_save(self, obj):
+		obj.date = date.today()
+		obj.user = self.request.user
+
+class APIItemReviewDetail(generics.RetrieveAPIView):
+	permission_classes = api_permissions_authoro
+	model = ItemReview
+	serializer_class = ItemReviewSerializer
+	def pre_save(self, obj):
+		obj.user = self.request.user

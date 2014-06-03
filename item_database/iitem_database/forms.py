@@ -1,6 +1,14 @@
 from django.forms import ModelForm
 from django import forms
-from iitem_database.models import UserItems, Item, Area, Creature, Drops, Found, Encountered
+from iitem_database.models import UserItems, Item, Area, Creature, Drops, Found, Encountered, ItemReview
+
+class ReviewItemForm(ModelForm):
+	def __init__(self, *args, **kwargs):
+		super(ReviewItemForm, self).__init__(*args, **kwargs)
+
+	class Meta:
+		model = ItemReview
+		fields = ('rating', 'comment')
 
 class AddUserItemForm(ModelForm):
 	def __init__(self, *args, **kwargs):

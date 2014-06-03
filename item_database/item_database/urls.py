@@ -34,6 +34,8 @@ urlpatterns = patterns('',
     url(r'^areas/add/$', AreaCreate.as_view(), name='add-area'),
     url(r'^creatures/add/$', CreatureCreate.as_view(), name='add-creature'),
 
+    url(r'^items/(?P<pk>\d+)/reviews/create/$', review, name='review_create'),
+
     url(r'^drop/add/item/(?P<itemID>\w+)/$', addDropForItem),
     url(r'^drop/add/creature/(?P<creatureID>\w+)/$', addDropForCreature),
     url(r'^drop/delete/(?P<dropID>\w+)/$', deleteDrop),
