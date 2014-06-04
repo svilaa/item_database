@@ -535,9 +535,8 @@ def itemPage(request, itemID, format=html):
 			'user': request.user,
 			'RATING_CHOICES': ItemReview.RATING_CHOICES,
 			})
-		#output = template.render(variables, context_instance=RequestContext(request))
 		return render_to_response('itemPage.html', RequestContext(request, variables))
-		#return HttpResponse(output)
+
 
 	elif format == json:
 		json_response = {}
@@ -548,7 +547,8 @@ def itemPage(request, itemID, format=html):
 		json_response['Found in'] = [ { 'Area ID' : area.id, 'Area name' : area.name } for area in areas ]
 		json_response['Dropped by'] = [ { 'Creature ID' : drop.creatureID.id, 
 			'Creature Name' : drop.creatureID.name , 'Drop Rate' : drop.dropRate } for drop in drops ]
-
+		json_response['Reviews'] = [ { 'Review ID': review.id, 'Rating' : review.rating, 
+			'Comment' : review.comment, 'User' : str(review.user), 'Date' : str(review.date) } for review in ItemReview.objects.filter(item=itemID) ]
 		return HttpResponse(jsn.dumps(json_response, indent=json_indent_level, separators=(',', ' : ')), 
 			content_type="application/json")
 	elif format == xml:
@@ -571,6 +571,15 @@ def itemPage(request, itemID, format=html):
 			SubElement(drop_object, 'Creature_ID').text = str(drop.creatureID.id)	
 			SubElement(drop_object, 'Creature_Name').text = drop.creatureID.name
 			SubElement(drop_object, 'Drop_Rate').text = str(drop.dropRate)
+
+		reviews = SubElement(data, 'Reviews')
+		for review in ItemReview.objects.filter(item=itemID):
+			review_object = SubElement(reviews, 'Review')
+			SubElement(review_object, 'Review_ID').text = str(review.id)
+			SubElement(review_object, 'Rating').text = str(review.rating)
+			SubElement(review_object, 'Comment').text = review.comment
+			SubElement(review_object, 'User').text = str(review.user)
+			SubElement(review_object, 'Date').text =  str(review.date)
 
 		return HttpResponse(tostring(data), content_type="application/xml")
 	else:
