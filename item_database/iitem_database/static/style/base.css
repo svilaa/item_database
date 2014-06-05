@@ -1,3 +1,7 @@
+html, body{     
+    height: 100%; 
+} 
+
 #header h1
 {
     margin: 0;
@@ -25,11 +29,19 @@
     bottom:0;
 }
 
-#footer
-{
+#wrapper{    /* Original footer style: http://www.consultoriainnova.com/blog/css/footer-siempre-abajo-css/*/
+    min-height: 100%;     
+    height: auto !important;     
+    height: 100%;     
+    margin: 0 auto -70px;
+} 
+
+#footer, #push {
     margin: 0;
     padding: 10px;
-    position:absolute;
+    position:relative;
     left: 50%;
     bottom:0;
+
+    height: 70px;
 }

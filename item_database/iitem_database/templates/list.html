@@ -4,8 +4,7 @@
 
 		<a href="/">Return to mainpage</a>
 		<h1> {{titlehead}} {% if user.username and listUrl != 'itemclasses' %}
-        (<a href="{{listUrl}}/add/">add</a>)
-    {% endif %} </h1>
+        (<a href="{{listUrl}}/add/">add</a>) {% endif %} </h1>
 			<ul>
 			{% for element in element_list %}
 				<li>

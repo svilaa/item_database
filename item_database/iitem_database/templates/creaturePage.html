@@ -5,7 +5,7 @@
 		<a href="/creatures.html">Return to creatures</a>
 		<h1> {{titlehead}} {% if user == creature.user %}
 			(<a href="/creatures/edit/{{creature.id}}">edit</a>)
-        (<a href="/creatures/delete/{{creature.id}}">delete</a>) {% endif %}</h1>
+        	(<a href="/creatures/delete/{{creature.id}}">delete</a>) {% endif %}</h1>
 			<p>Name: {{creature.name}}</p>
 			<p>Description: {{creature.desc}}</p>
 			<p>Unique: {% if creature.unique %}
@@ -15,37 +15,35 @@
 						{% endif %}
 			</p>
 
-
 			<p>Souls: {{creature.souls}}<p>
 
-
 			<p>Drops: {% if user.username %}
-		(<a href="/drop/add/creature/{{creature.id}}/">add</a>) {% endif %}</p>
+			(<a href="/drop/add/creature/{{creature.id}}/">add</a>) {% endif %}</p>
 			{% if drops %}
-			<ul>
-			{% for drop in drops %}
-				<li>
-					<a href="/items/{{drop.itemID.id}}.html">{{drop.itemID.name}}</a> - {{drop.dropRate}}% {% if user %}
-		(<a href="/drop/delete/{{drop.id}}/">delete</a>) {% endif %}
-				</li>
-			{% endfor %}
-			</ul>
+				<ul>
+				{% for drop in drops %}
+					<li>
+						<a href="/items/{{drop.itemID.id}}.html">{{drop.itemID.name}}</a> - {{drop.dropRate}}% {% if user %}
+						(<a href="/drop/delete/{{drop.id}}/">delete</a>) {% endif %}
+					</li>
+				{% endfor %}
+				</ul>
 			{% else %}
 				<p>None</p>
 			{% endif %}
 
 
 			<p>Can be found in: {% if user.username %}
-		(<a href="/encountered/add/creature/{{creature.id}}/">add</a>) {% endif %}</p>
+			(<a href="/encountered/add/creature/{{creature.id}}/">add</a>) {% endif %}</p>
 			{% if encountereds %}
-			<ul>
-			{% for encountered in encountereds %}
-				<li>
-					<a href="/areas/{{encountered.areaID.id}}.html">{{encountered.areaID.name}}</a> {% if user.username %}
-		(<a href="/encountered/delete/{{encountered.id}}/">delete</a>) {% endif %}
-				</li>
-			{% endfor %}
-			</ul>
+				<ul>
+				{% for encountered in encountereds %}
+					<li>
+						<a href="/areas/{{encountered.areaID.id}}.html">{{encountered.areaID.name}}</a> {% if user.username %}
+						(<a href="/encountered/delete/{{encountered.id}}/">delete</a>) {% endif %}
+					</li>
+				{% endfor %}
+				</ul>
 			{% else %}
 				<p>Nowhere</p>
 			{% endif %}

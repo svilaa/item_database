@@ -11,41 +11,44 @@
 
 <body>
 
-<div id="header">
-    {% block header %}
-        <h1> <a href="/">ITEM_DATABASE</a> </h1>
-        {% if user.username %}
-            <p>User {{ user.username }} (<a href="/accounts/logout/?next=/">logout</a>)</p>
-        {% else %}
-            <p><a href="/accounts/login/?next=/">Sign in</a></p>
-            <p><a href="/accounts/register/?next=/">Sign up</a></p>
-        {% endif %}
-    {% endblock %}
-</div>
-
-
-<div id="sidebar">
-    {% block sidebar %}
-        <ul>
+<div id="wrapper">
+    <div id="header">
+        {% block header %}
+            <h1> <a href="/">ITEM_DATABASE</a> </h1>
             {% if user.username %}
-                <p> <a href="/user/{{user.username}}.html">Your userpage</a></p>
-                <br />
+                <p>User {{ user.username }} (<a href="/accounts/logout/?next=/">logout</a>)</p>
+            {% else %}
+                <p><a href="/accounts/login/?next=/">Sign in</a></p>
+                <p><a href="/accounts/register/?next=/">Sign up</a></p>
             {% endif %}
-                <p> <a href="/items.html">Items</a></p>
-                <p> <a href="/itemclasses.html">Item classes</a></p>
-                <p> <a href="/areas.html">Areas</a></p>
-                <p> <a href="/creatures.html">Creatures</a></p>
+        {% endblock %}
+    </div>
 
-        </ul>
-    {% endblock %}
+
+    <div id="sidebar">
+        {% block sidebar %}
+            <ul>
+                {% if user.username %}
+                    <p> <a href="/user/{{user.username}}.html">Your userpage</a></p>
+                    <br />
+                {% endif %}
+                    <p> <a href="/items.html">Items</a></p>
+                    <p> <a href="/itemclasses.html">Item classes</a></p>
+                    <p> <a href="/areas.html">Areas</a></p>
+                    <p> <a href="/creatures.html">Creatures</a></p>
+
+            </ul>
+        {% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        {% endblock %}
+    </div>
+
+<div id="push"></div>
 </div>
-
-<div id="content">
-    {% block content %}
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    {% endblock %}
-</div>
-
 <div id="footer">
     {% block footer %}{% endblock %}
 </div>

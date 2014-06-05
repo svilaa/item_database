@@ -8,34 +8,33 @@
         (<a href="/areas/delete/{{area.id}}">delete</a>) {% endif %}</h1>
 			<p>Name: {{area.name}}</p>
 			<p>Description: {{area.desc}}</p>
-			
 
 			<p>Items in this area: {% if user.username %}
-		(<a href="/found/add/area/{{area.id}}/">add</a>) {% endif %}</p>
+			(<a href="/found/add/area/{{area.id}}/">add</a>) {% endif %}</p>
 			{% if founds %}
-			<ul>
-			{% for found in founds %}
-				<li>
-					<a href="/items/{{found.itemID.id}}.html">{{found.itemID.name}}</a> {% if user == area.user %}
-		(<a href="/found/delete/{{found.id}}/">delete</a>) {% endif %}
-				</li>
-			{% endfor %}
-			</ul>
-			{% else %}
-				<p>None</p>
-			{% endif %}
+				<ul>
+				{% for found in founds %}
+					<li>
+						<a href="/items/{{found.itemID.id}}.html">{{found.itemID.name}}</a> {% if user == area.user %}
+						(<a href="/found/delete/{{found.id}}/">delete</a>) {% endif %}
+					</li>
+				{% endfor %}
+				</ul>
+				{% else %}
+					<p>None</p>
+				{% endif %}
 
 			<p>Creatures in this area:{% if user.username %}
-		(<a href="/encountered/add/area/{{area.id}}/">add</a>) {% endif %}</p>
+			(<a href="/encountered/add/area/{{area.id}}/">add</a>) {% endif %}</p>
 			{% if encountereds %}
-			<ul>
-			{% for encountered in encountereds %}
-				<li>
-					<a href="/creatures/{{encountered.creatureID.id}}.html">{{encountered.creatureID.name}}</a> {% if user.username %}
-		(<a href="/encountered/delete/{{encountered.id}}/">delete</a>) {% endif %}
-				</li>
-			{% endfor %}
-			</ul>
+				<ul>
+				{% for encountered in encountereds %}
+					<li>
+						<a href="/creatures/{{encountered.creatureID.id}}.html">{{encountered.creatureID.name}}</a> {% if user.username %}
+						(<a href="/encountered/delete/{{encountered.id}}/">delete</a>) {% endif %}
+					</li>
+				{% endfor %}
+				</ul>
 			{% else %}
 				<p>None</p>
 			{% endif %}
