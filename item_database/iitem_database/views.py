@@ -56,7 +56,6 @@ class CheckIsOwnerMixin(object):
             raise PermissionDenied
         return obj
 
-
 def register(request):
 	"""
 	  Permits new users to enter in the application through a formulary

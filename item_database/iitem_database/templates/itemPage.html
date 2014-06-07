@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 	<span vocab="http://schema.org/" typeof="ItemPage">
-		<a href="/items.html">Return to items</a>
+		<a href="/items.html"> Return to items </a>
 		<h1> {{titlehead}} {% if user == item.user %}
 		(<a href="/items/edit/{{item.id}}">edit</a>)
         (<a href="/items/delete/{{item.id}}">delete</a>) {% endif %} </h1>
-			<p>Name: <span property="name">{{item.name}}</span></p>
-			<p>Description: <span property="description">{{item.desc}}</span></p>
+			<p> Name: <span property="name">{{item.name}} </span></p>
+			<p> Description: <span property="description">{{item.desc}} </span></p>
 			<span rel="specialty" typeof="Specialty">
 			<p>Class: <span property="name"><a href="/itemclasses/{{item.typeID.id}}.html">{{item.typeID.name}}</a></span></p>
 					  <span property="description" content="{{ item.typeID.desc }}"></span>
@@ -15,14 +15,14 @@
 			<span property="dateCreated" content="{{ item.date }}"></span>
 			<span property="accessibilityAPI" content="{% url 'item-detail' item.id %}"></span>
 
-			<p>The item can be found in: {% if user.username %}
+			<p> The item can be found in: {% if user.username %}
 		(<a href="/found/add/item/{{item.id}}/">add</a>) {% endif %}</p>
 			{% if founds %}
 			<ul rel="contentLocation">
 			{% for found in founds %}
 				<li typeof="Place">
-					<span property="name"><a href="/areas/{{area.id}}.html">{{found.areaID.name}}</a></span> {% if user == item.user %}
-		(<a href="/found/delete/{{found.id}}/">delete</a>) {% endif %}
+					<span property="name"><a href="/areas/{{ found.areaID.id }}.html">{{found.areaID.name}}</a></span> {% if user == item.user %}
+						(<a href="/found/delete/{{found.id}}/">delete</a>) {% endif %}
 					<span property="description" content="{{ found.areaID.desc }}"></span>
 					<span property="creator" content="{{ found.areaID.user }}"></span>
 				</li>
@@ -32,7 +32,7 @@
 				<p>Nowhere</p>
 			{% endif %}
 
-			<p>The item is dropped by: {% if user.username %}
+			<p> The item is dropped by: {% if user.username %}
 		(<a href="/drop/add/item/{{item.id}}/">add</a>) {% endif %} </p>
 			{% if drops %}
 			<ul rel="provider">

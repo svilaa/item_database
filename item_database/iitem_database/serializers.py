@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from iitem_database.models import ItemClass, Area, Creature, \
-									Item, Found, UserItems, Drops, Encountered, ItemReview
+									Item, Found, UserItems, Drops, \
+									Encountered, ItemReview
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:

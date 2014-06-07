@@ -45,8 +45,7 @@ urlpatterns = patterns('',
 	url(r'itemreviews/$', APIItemReviewList.as_view(), name='itemreview-list'),
 	url(r'itemreviews/(?P<pk>\d+)/$', APIItemReviewDetail.as_view(), name='itemreview-detail'),
 
-	url(r'^login/', include('rest_framework.urls',
-    	namespace='rest_framework')),
+	url(r'^login/', include('rest_framework.urls', namespace='rest_framework')),
 )
 
 urlpatterns = format_suffix_patterns(urlpatterns)
