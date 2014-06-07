@@ -1,21 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
+	<span vocab="http://schema.org/" typeof="ItemPage">
 		<a href="/items.html">Return to items</a>
 		<h1> {{titlehead}} {% if user == item.user %}
 		(<a href="/items/edit/{{item.id}}">edit</a>)
         (<a href="/items/delete/{{item.id}}">delete</a>) {% endif %} </h1>
-			<p>Name: {{item.name}} </p>
-			<p>Description: {{item.desc}} </p>
-			<p>Class: <a href="/itemclasses/{{item.typeID.id}}.html">{{item.typeID.name}}</a></p>
+			<p>Name: <span property="name">{{item.name}}</span></p>
+			<p>Description: <span property="description">{{item.desc}}</span></p>
+			<span rel="specialty" typeof="Specialty">
+			<p>Class: <span property="name"><a href="/itemclasses/{{item.typeID.id}}.html">{{item.typeID.name}}</a></span></p>
+					  <span property="description" content="{{ item.typeID.desc }}"></span>
+			</span>
+			<span property="creator" content="{{ item.user }}"></span>
+			<span property="dateCreated" content="{{ item.date }}"></span>
+			<span property="accessibilityAPI" content="{% url 'item-detail' item.id %}"></span>
 
 			<p>The item can be found in: {% if user.username %}
 		(<a href="/found/add/item/{{item.id}}/">add</a>) {% endif %}</p>
 			{% if founds %}
-			<ul>
+			<ul rel="contentLocation">
 			{% for found in founds %}
-				<li>
-					<a href="/areas/{{area.id}}.html">{{found.areaID.name}}</a> {% if user == item.user %}
+				<li typeof="Place">
+					<span property="name"><a href="/areas/{{area.id}}.html">{{found.areaID.name}}</a></span> {% if user == item.user %}
 		(<a href="/found/delete/{{found.id}}/">delete</a>) {% endif %}
+					<span property="description" content="{{ found.areaID.desc }}"></span>
+					<span property="creator" content="{{ found.areaID.user }}"></span>
 				</li>
 			{% endfor %}
 			</ul>
@@ -26,43 +35,19 @@
 			<p>The item is dropped by: {% if user.username %}
 		(<a href="/drop/add/item/{{item.id}}/">add</a>) {% endif %} </p>
 			{% if drops %}
-			<ul>
+			<ul rel="provider">
 			{% for drop in drops %}
-				<li>
-					<a href="/creatures/{{drop.creatureID.id}}.html">{{drop.creatureID.name}}</a> - {{drop.dropRate}}% {% if user.username %}
+				<li typeof="Person">
+					<span property="name"><a href="/creatures/{{drop.creatureID.id}}.html">{{drop.creatureID.name}}</a></span> - {{drop.dropRate}}% {% if user.username %}
 		(<a href="/drop/delete/{{drop.id}}/">delete</a>) {% endif %}
+					<span property="description" content="{{ drop.creatureID.desc }}"></span>
+					<span property="creator" content="{{ drop.creatureID.user }}"></span>
 				</li>
 			{% endfor %}
 			</ul>
 			{% else %}
 				<p>Nobody</p>
 			{% endif %}
-
-		<!-- Semantic markings -->
-		<span vocab="http://schema.org/" typeof="ItemPage">
-			<span property="name" content="{{ item.name }}"></span>
-			<span property="description" content="{{ item.desc }}"></span>
-			<span property="creator" content="{{ item.user }}"></span>
-			<span property="dateCreated" content="{{ item.date }}"></span>
-			<span property="accessibilityAPI" content="{% url 'item-detail' item.id %}"></span>
-			{% for drop in drops %}
-			<span rel="provider">
-				<p typeof="Person">
-					<span property="name" content="{{ drop.creatureID.name }}"></span>
-					<span property="description" content="{{ drop.creatureID.desc }}"></span>
-					<span property="creator" content="{{ drop.creatureID.user }}"></span>
-				</p>
-			</span>
-			{% endfor %}
-
-			{% for fnd in founds %}
-			<span rel="contentLocation">
-				<p typeof="Place">
-					<span property="name" content="{{ fnd.areaID.name }}"></span>
-					<span property="description" content="{{ fnd.areaID.desc }}"></span>
-				</p>
-			</span>
-			{% endfor %}
 
 			<h2>Reviews</h2>
 			{% if item.itemreview_set.all|length > 0 %}
@@ -92,7 +77,6 @@
 			</ul>
 			</span>
 			{% endif %}
-		</span>
 
 
 			<h3>Add Review</h3>
